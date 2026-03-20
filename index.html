@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>БОБР ТОКИО | PvP ДУЭЛИ + КЕЙСЫ</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
+    body { background: #1d3b1d; font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 8px; }
+    .w { max-width: 1500px; width: 100%; background: #2c1a0e; border-radius: 50px; border: 5px solid #c49a6c; box-shadow: 0 20px 0 #8b5a2b; padding: 15px; }
+    @media (max-width: 768px) { body { padding: 5px; } .w { padding: 10px; } }
+    .tabs { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
+    .tab { background: #4a2c1a; color: white; padding: 10px 20px; border-radius: 40px; cursor: pointer; font-weight: bold; border: 2px solid #c49a6c; }
+    .tab.active { background: #ffd966; color: #2c1a0e; border-color: #b87c3a; }
+    .tab-content { display: none; color: white; }
+    .tab-content.active { display: block; }
+    .h { display: flex; justify-content: space-between; align-items: center; background: #4a2c1a; padding: 12px 20px; border-radius: 50px; margin-bottom: 15px; border: 4px solid #c49a6c; flex-wrap: wrap; gap: 10px; }
+    @media (max-width: 480px) { .h { flex-direction: column; } }
+    .pi { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: center; }
+    .pn { background: #ffd966; padding: 8px 18px; border-radius: 40px; font-weight: bold; color: #4a2c1a; border: 3px solid #b87c3a; cursor: pointer; }
+    .pb { background: #8b5a2b; color: white; padding: 6px 14px; border-radius: 30px; font-weight: bold; border: 3px solid #c49a6c; }
+    .sh { background: #c49a6c; padding: 8px 20px; border-radius: 40px; font-size: 1.3em; font-weight: bold; color: #2c1a0e; border: 3px solid #8b5a2b; }
+    .mg { display: grid; grid-template-columns: 1.4fr 1fr; gap: 15px; margin-bottom: 15px; }
+    @media (max-width: 768px) { .mg { grid-template-columns: 1fr; } }
+    .cs { background: #c49a6c; padding: 15px; border-radius: 40px; border: 5px solid #8b5a2b; text-align: center; }
+    .bc { background: #6b8c42; border-radius: 60px; padding: 15px; margin: 10px 0; border: 5px dashed #f5e6d3; cursor: pointer; position: relative; overflow: hidden; min-height: 200px; display: flex; align-items: center; justify-content: center; }
+    .bc:active { transform: scale(0.96); background: #5a7a35; }
+    .be { font-size: 140px; filter: drop-shadow(8px 10px 0 #3d5a2b); transition: transform 0.1s; pointer-events: none; }
+    @media (max-width: 768px) { .be { font-size: 100px; } }
+    .ce { position: absolute; pointer-events: none; font-size: 30px; animation: f 1s ease-out forwards; z-index: 10; color: white; font-weight: bold; text-shadow: 2px 2px 0 #000; }
+    @keyframes f { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-80px); } }
+    .st { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; background: #4a2c1a; color: white; padding: 12px; border-radius: 30px; margin: 12px 0; font-weight: bold; }
+    .si { display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; }
+    .sv { font-size: 1.2em; color: #ffd966; }
+    .ss { background: #4a2c1a; padding: 15px; border-radius: 40px; border: 5px solid #c49a6c; color: white; }
+    .tt { font-size: 1.3em; text-align: center; color: #ffd966; margin-bottom: 12px; text-shadow: 3px 3px 0 #8b5a2b; }
+    .sg { display: grid; gap: 8px; margin-bottom: 15px; max-height: 250px; overflow-y: auto; }
+    .si2 { background: #2c1a0e; padding: 8px; border-radius: 25px; display: flex; align-items: center; gap: 10px; border: 3px solid #c49a6c; cursor: pointer; color: white; }
+    .si2.sel { border: 4px solid #ffd966; background: #3d2a1a; }
+    .se { font-size: 1.8em; }
+    .bb { background: #ffd966; border: none; padding: 4px 10px; border-radius: 20px; font-weight: bold; cursor: pointer; border-bottom: 3px solid #b87c3a; color: #2c1a0e; }
+    .us { background: #8b5a2b; padding: 12px; border-radius: 30px; margin-top: 12px; }
+    .ug { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 8px 0; }
+    .uc { background: #4a2c1a; padding: 10px; border-radius: 20px; border: 3px solid #c49a6c; cursor: pointer; font-size: 0.85em; color: white; }
+    .uc.dis { opacity: 0.5; pointer-events: none; }
+    .un { font-weight: bold; color: #ffd966; }
+    .pb2 { width: 100%; background: linear-gradient(145deg, #b22222, #8b1a1a); border: none; font-size: 1.1em; font-weight: bold; padding: 10px; border-radius: 30px; border-bottom: 5px solid #6b1a1a; color: white; cursor: pointer; margin-top: 10px; }
+    .as { background: #2c1a0e; border-radius: 30px; padding: 12px; border: 5px solid #c49a6c; margin: 15px 0; }
+    .ag { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 8px; }
+    .ac { background: #4a2c1a; padding: 6px; border-radius: 12px; text-align: center; border: 2px solid #c49a6c; font-size: 0.7em; color: white; }
+    .ac.unl { border-color: gold; background: #5a3a2a; }
+    .ae { font-size: 1.5em; }
+    .lb { background: #2c1a0e; border-radius: 30px; padding: 12px; border: 5px solid #c49a6c; margin-top: 12px; }
+    .lb h2 { color: #ffd966; font-size: 1.3em; text-align: center; }
+    .lb table { width: 100%; border-collapse: collapse; color: white; font-size: 0.8em; }
+    .lb th { background: #4a2c1a; padding: 6px; color: #ffd966; }
+    .lb td { padding: 5px; text-align: center; border-bottom: 1px solid #8b5a2b; }
+    .ft { display: flex; justify-content: space-between; margin-top: 12px; flex-wrap: wrap; gap: 6px; }
+    .fb { background: #b87c3a; border: none; color: #2c1a0e; padding: 6px 10px; border-radius: 25px; font-weight: bold; cursor: pointer; border-bottom: 4px solid #6b4a2a; flex: 1; font-size: 0.75em; }
+    .duel-btn, .case-btn, .market-btn, .admin-btn, .pvp-btn, .buy-gems { background: linear-gradient(145deg, #ffd966, #ffb347); border-radius: 30px; padding: 8px; margin-bottom: 8px; text-align: center; font-weight: bold; color: #2c1a0e; cursor: pointer; border: 2px solid #c49a6c; }
+    .pvp-btn { background: linear-gradient(145deg, #4caf50, #2e7d32); color: white; }
+    .admin-btn { background: linear-gradient(145deg, #4a2c1a, #2c1a0e); color: white; }
+    .buy-gems { background: linear-gradient(145deg, #9c27b0, #6a1b9a); color: white; }
+    .case-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
+    .case-item { background: #2c1a0e; border-radius: 20px; padding: 10px; text-align: center; border: 2px solid #c49a6c; cursor: pointer; color: white; }
+    .case-item.common { border-color: silver; }
+    .case-item.rare { border-color: #4caf50; }
+    .case-item.epic { border-color: #9c27b0; }
+    .case-item.legendary { border-color: #ff9800; }
+    .case-item.mythic { border-color: #f44336; }
+    .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: flex; justify-content: center; align-items: center; z-index: 1000; }
+    .modal-content { background: #2c1a0e; border-radius: 40px; padding: 20px; max-width: 90%; max-height: 80%; overflow: auto; border: 5px solid #c49a6c; color: white; }
+    .close-btn { background: #b22222; color: white; border: none; padding: 8px 20px; border-radius: 30px; margin: 5px; cursor: pointer; }
+    .duel-request { background: #4a2c1a; padding: 10px; border-radius: 20px; margin: 5px; display: flex; justify-content: space-between; align-items: center; }
+  </style>
+</head>
+<body>
+<div class="w">
+  <div class="h">
+    <div class="pi">
+      <div class="pn" id="a0">Игрок</div>
+      <div class="pb" id="a1">🌟 0</div>
+      <div class="pb" id="a2">🖱️ 0</div>
+      <div class="pb" id="comboDisplay">🔥 0</div>
+      <div class="pb" id="crystalDisplay">💎 0</div>
+    </div>
+    <div class="sh" id="a3">💰 0</div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" data-tab="main">🏠 ГЛАВНАЯ</div>
+    <div class="tab" data-tab="cases">📦 КЕЙСЫ (40+ скинов)</div>
+    <div class="tab" data-tab="pvp">⚔️ PvP ДУЭЛИ</div>
+    <div class="tab" data-tab="shop">💎 МАГАЗИН</div>
+    <div class="tab" data-tab="admin" id="adminTab">🔧 АДМИН</div>
+  </div>
+
+  <!-- ГЛАВНАЯ -->
+  <div class="tab-content active" id="tab-main">
+    <div class="mg">
+      <div class="cs">
+        <div class="buy-gems" id="buyGemsBtn">💎 КУПИТЬ АЛМАЗЫ (1000💰 = 1💎)</div>
+        <div class="bc" id="b0"><div class="be" id="b1">🦫</div></div>
+        <div class="st">
+          <div class="si"><span>⚡</span><span class="sv" id="b2">1</span></div>
+          <div class="si"><span>🔄</span><span class="sv" id="b3">0</span></div>
+          <div class="si"><span>💥</span><span class="sv" id="b4">0%</span></div>
+          <div class="si"><span>🍀</span><span class="sv" id="b5">0%</span></div>
+        </div>
+        <div class="st">
+          <div class="si"><span>💰/тык</span><span class="sv" id="b6">1</span></div>
+          <div class="si"><span>⏱️/с</span><span class="sv" id="b7">0</span></div>
+          <div class="si"><span>⚡x</span><span class="sv" id="comboMult">1</span></div>
+        </div>
+      </div>
+      <div class="ss">
+        <div class="tt">🏪 МАГАЗИН СКИНОВ (ТОЛЬКО ИЗ КЕЙСОВ)</div>
+        <div class="sg" id="c0"></div>
+        <div class="us">
+          <div class="tt">⚡ АПГРЕЙДЫ</div>
+          <div class="ug" id="d0"></div>
+        </div>
+        <button class="pb2" id="f0">🌟 ПРЕСТИЖ (10к💰)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- КЕЙСЫ -->
+  <div class="tab-content" id="tab-cases">
+    <div class="tt">📦 ОТКРОЙ КЕЙС И ПОЛУЧИ РЕДКИЙ СКИН!</div>
+    <div class="case-grid" id="caseGrid"></div>
+    <div style="margin-top: 20px;">
+      <div class="tt">🎲 ВСЕ СКИНЫ ИЗ КЕЙСОВ</div>
+      <div class="sg" id="allSkinsList" style="max-height: 300px;"></div>
+    </div>
+  </div>
+
+  <!-- PvP ДУЭЛИ -->
+  <div class="tab-content" id="tab-pvp">
+    <div class="tt">⚔️ PvP ДУЭЛИ С РЕАЛЬНЫМИ ИГРОКАМИ</div>
+    <div class="pvp-btn" id="findDuelBtn">🔍 НАЙТИ ПРОТИВНИКА</div>
+    <div id="duelRequests" style="margin-top: 15px;"></div>
+    <div id="activeDuel" style="margin-top: 15px; background: #4a2c1a; border-radius: 30px; padding: 15px; text-align: center;"></div>
+  </div>
+
+  <!-- МАГАЗИН АЛМАЗОВ -->
+  <div class="tab-content" id="tab-shop">
+    <div class="tt">💎 МАГАЗИН АЛМАЗОВ</div>
+    <div class="case-grid">
+      <div class="case-item" id="buy10gems">💎 10 АЛМАЗОВ - 9000💰</div>
+      <div class="case-item" id="buy50gems">💎 50 АЛМАЗОВ - 40000💰</div>
+      <div class="case-item" id="buy100gems">💎 100 АЛМАЗОВ - 75000💰</div>
+      <div class="case-item" id="buy500gems">💎 500 АЛМАЗОВ - 300000💰</div>
+    </div>
+  </div>
+
+  <!-- АДМИН -->
+  <div class="tab-content" id="tab-admin">
+    <div class="tt">🔧 АДМИН-ПАНЕЛЬ</div>
+    <div id="adminControls"></div>
+  </div>
+
+  <div class="as">
+    <div class="tt">🏆 ДОСТИЖЕНИЯ</div>
+    <div class="ag" id="g0"></div>
+  </div>
+
+  <div class="lb">
+    <h2>🌍 МИРОВАЯ ТАБЛИЦА</h2>
+    <div style="display:flex; gap:8px; justify-content:center; margin-bottom:10px;">
+      <button id="refreshLB" style="background:#4a2c1a; color:#ffd966; border:2px solid #c49a6c; padding:5px 12px; border-radius:20px;">🔄 Обновить</button>
+    </div>
+    <table style="width:100%">
+      <thead> <tr><th>#</th><th>Игрок</th><th>💰</th><th>🌟</th><th>💎</th><th>🎨</th><th>🏆PvP</th></tr> </thead>
+      <tbody id="h0"></tbody>
+    </table>
+  </div>
+
+  <div class="ft">
+    <button class="fb" id="i0">✏️ Имя</button>
+    <button class="fb" id="i1">🔄 Сброс</button>
+    <button class="fb" id="i2">📤 Ссылка</button>
+    <button class="fb" id="i3">💾 Save</button>
+    <button class="fb" id="i4">📂 Load</button>
+  </div>
+</div>
+
+<script>
+  (function(){
+    // ПОЛНОЕ ОБНУЛЕНИЕ ВСЕХ ДАННЫХ
+    localStorage.clear();
+
+    let C = {
+      n: 'Игрок_'+Math.floor(Math.random()*1000),
+      s: 0,
+      p: 0,
+      k: '🦫',
+      t: 0,
+      lastDaily: 0,
+      crystals: 0,
+      pvpWins: 0
+    };
+
+    // ВСЕ СКИНЫ ТОЛЬКО ИЗ КЕЙСОВ (40 штук с редкостями)
+    let allCaseSkins = [
+      {e:'🦫',n:'Бобр',r:'common'},{e:'🐹',n:'Хомяк',r:'common'},{e:'🐼',n:'Панда',r:'common'},{e:'🦊',n:'Лис',r:'common'},
+      {e:'🐸',n:'Ква',r:'common'},{e:'🐲',n:'Дракон',r:'rare'},{e:'👽',n:'Инопл',r:'rare'},{e:'💎',n:'Алмаз',r:'rare'},
+      {e:'👑',n:'Король',r:'rare'},{e:'🌈',n:'Радуга',r:'epic'},{e:'⚡',n:'Молния',r:'epic'},{e:'🔥',n:'Огонь',r:'epic'},
+      {e:'❄️',n:'Лёд',r:'epic'},{e:'🌍',n:'Космос',r:'epic'},{e:'🤖',n:'Робот',r:'epic'},{e:'🎮',n:'Геймер',r:'epic'},
+      {e:'⚽',n:'Спорт',r:'rare'},{e:'🍕',n:'Пицца',r:'rare'},{e:'🎸',n:'Рок',r:'rare'},{e:'💀',n:'Смерть',r:'epic'},
+      {e:'6️⃣7️⃣',n:'67',r:'epic'},{e:'👾',n:'ВИРУС',r:'epic'},{e:'⭐',n:'ЗВЕЗДА',r:'legendary'},{e:'💎⭐',n:'АЛМАЗ+',r:'legendary'},
+      {e:'🐉',n:'ДРАКОН',r:'legendary'},{e:'👻',n:'ПРИЗРАК',r:'legendary'},{e:'🤴',n:'КОРОЛЬ',r:'legendary'},{e:'🐺',n:'ВОЛК',r:'epic'},
+      {e:'🦅',n:'ОРЁЛ',r:'epic'},{e:'🐋',n:'КИТ',r:'legendary'},{e:'🦄',n:'ЕДИНОРОГ',r:'mythic'},{e:'🐉🔥',n:'ОГНЕННЫЙ',r:'mythic'},
+      {e:'👁️',n:'ВСЕВИДЯЩИЙ',r:'mythic'},{e:'⚜️',n:'ЗОЛОТОЙ',r:'legendary'},{e:'💀👑',n:'КОРОЛЬ СМЕРТИ',r:'mythic'},{e:'🌌',n:'ГАЛАКТИКА',r:'mythic'},
+      {e:'🎭',n:'ТЕАТР',r:'epic'},{e:'🔮',n:'МАГ',r:'legendary'},{e:'⚔️',n:'ВОИН',r:'epic'},{e:'🏆',n:'ЧЕМПИОН',r:'mythic'}
+    ];
+
+    let D = [...allCaseSkins];
+    let E = new Set(['🦫']); // Только стартовый скин, остальные только из кейсов
+    let F = {
+      a: 1, b: 0, c: 0, d: 2, e: 0, f: 0, g: 0, h: 0
+    };
+
+    let G = [];
+    let combo = 0, lastClickTime = 0;
+    let duelRequests = [];
+    let activeDuel = null;
+
+    const JSONBIN_ID = "69bc611dc3097a1dd53eb775";
+    const API_KEY = "$2a$10$YLHY6.mDXbRnvsanaAARaug7k.OQUxQxJpoKRD0gEIIl306IZi6mC";
+    const BIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_ID}/latest`;
+    const UPDATE_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_ID}`;
+
+    let I = {
+      a0: document.getElementById('a0'), a1: document.getElementById('a1'), a2: document.getElementById('a2'), a3: document.getElementById('a3'),
+      b0: document.getElementById('b0'), b1: document.getElementById('b1'), b2: document.getElementById('b2'), b3: document.getElementById('b3'),
+      b4: document.getElementById('b4'), b5: document.getElementById('b5'), b6: document.getElementById('b6'), b7: document.getElementById('b7'),
+      c0: document.getElementById('c0'), d0: document.getElementById('d0'), g0: document.getElementById('g0'), h0: document.getElementById('h0'),
+      comboDisplay: document.getElementById('comboDisplay'), comboMult: document.getElementById('comboMult'), crystalDisplay: document.getElementById('crystalDisplay')
+    };
+
+    function getComboMultiplier() {
+      if(combo >= 50) return 3.0; if(combo >= 30) return 2.5; if(combo >= 20) return 2.0;
+      if(combo >= 10) return 1.5; if(combo >= 5) return 1.2; return 1;
+    }
+
+    function J() {
+      let K = 1 + (C.p * 0.1);
+      let comboMult = getComboMultiplier();
+      I.a0.textContent = C.n;
+      I.a1.textContent = `🌟 ${C.p}`;
+      I.a2.textContent = `🖱️ ${C.t}`;
+      I.a3.textContent = `💰 ${Math.floor(C.s)}`;
+      I.crystalDisplay.textContent = `💎 ${C.crystals}`;
+      I.b2.textContent = F.a; I.b3.textContent = F.b; I.b4.textContent = F.c+'%'; I.b5.textContent = F.e+'%';
+      I.b6.textContent = Math.floor(F.a * K * comboMult); I.b7.textContent = Math.floor(F.b * K);
+      I.b1.textContent = C.k;
+      I.comboDisplay.textContent = `🔥 ${combo}`;
+      I.comboMult.textContent = comboMult.toFixed(1);
+      renderSkins(); renderUpgrades(); renderAchievements(); saveLocal();
+      if(activeDuel && Date.now() >= activeDuel.endTime) endDuel();
+    }
+
+    function saveLocal() {
+      localStorage.setItem('bobrName', C.n); localStorage.setItem('bobrScore', C.s); localStorage.setItem('bobrPrestige', C.p);
+      localStorage.setItem('bobrSkin', C.k); localStorage.setItem('bobrSkins', JSON.stringify([...E]));
+      localStorage.setItem('bobrClicks', C.t); localStorage.setItem('bobrLastDaily', C.lastDaily);
+      localStorage.setItem('bobrCrystals', C.crystals); localStorage.setItem('bobrPvpWins', C.pvpWins);
+      localStorage.setItem('u_a', F.a); localStorage.setItem('u_b', F.b); localStorage.setItem('u_c', F.c);
+      localStorage.setItem('u_d', F.d); localStorage.setItem('u_e', F.e); localStorage.setItem('u_f', F.f);
+      localStorage.setItem('u_g', F.g); localStorage.setItem('u_h', F.h);
+      localStorage.setItem('ach', JSON.stringify(G));
+      localStorage.setItem('duelRequests', JSON.stringify(duelRequests));
+      localStorage.setItem('activeDuel', JSON.stringify(activeDuel));
+    }
+
+    async function loadLeaderboard() {
+      try {
+        let res = await fetch(BIN_URL, { headers: { 'X-Master-Key': API_KEY } });
+        let data = await res.json();
+        let lb = data.record.leaderboard || [];
+        renderLeaderboard(lb);
+      } catch(e) { I.h0.innerHTML = '<tr><td colspan="7">Ошибка загрузки</td></tr>'; }
+    }
+
+    async function saveToLeaderboard() {
+      try {
+        let res = await fetch(BIN_URL, { headers: { 'X-Master-Key': API_KEY } });
+        let data = await res.json();
+        let lb = data.record.leaderboard || [];
+        let player = { name: C.n, score: Math.floor(C.s), prestige: C.p, crystals: C.crystals, skin: C.k, pvpWins: C.pvpWins, timestamp: Date.now() };
+        let idx = lb.findIndex(p => p.name === C.n);
+        if(idx !== -1) lb[idx] = player; else lb.push(player);
+        lb.sort((a,b) => b.score - a.score);
+        lb = lb.slice(0, 30);
+        await fetch(UPDATE_URL, { method: 'PUT', headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY }, body: JSON.stringify({ leaderboard: lb }) });
+        renderLeaderboard(lb);
+      } catch(e) {}
+    }
+
+    function renderLeaderboard(lb) {
+      I.h0.innerHTML = '';
+      lb.slice(0, 10).forEach((p,i) => {
+        I.h0.innerHTML += `<tr><td>${i+1}</td><td>${p.name}${p.name===C.n?'⭐':''}</td><td>${p.score}</td><td>${p.prestige}</td><td>${p.crystals||0}</td><td>${p.skin}</td><td>🏆${p.pvpWins||0}</td></tr>`;
+      });
+    }
+
+    function renderSkins() {
+      I.c0.innerHTML = '';
+      D.forEach(s=>{
+        let owned = E.has(s.e);
+        let sel = C.k === s.e;
+        let div = document.createElement('div');
+        div.className = `si2 ${sel?'sel':''}`;
+        div.innerHTML = `<span class="se">${s.e}</span><div><div class="sn">${s.n}</div><div class="sp">${s.r}</div></div>${owned?'✅':'❌ (только из кейсов)'}`;
+        if(owned) div.addEventListener('click', ()=>{ C.k = s.e; J(); });
+        I.c0.appendChild(div);
+      });
+    }
+
+    function renderUpgrades() {
+      let ups = [{i:'a',n:'💪 Сила',b:50,m:30,v:F.a,x:100},{i:'b',n:'🤖 Авто',b:100,m:75,v:F.b,x:50},{i:'c',n:'⚡ Крит',b:200,m:100,v:F.c,x:75},{i:'e',n:'🍀 Удача',b:150,m:50,v:F.e,x:50}];
+      I.d0.innerHTML = '';
+      ups.forEach(u=>{
+        let price = Math.floor(u.b + (u.v * u.m));
+        let div = document.createElement('div');
+        div.className = `uc ${C.s<price||u.v>=u.x?'dis':''}`;
+        div.innerHTML = `<div class="un">${u.n}</div><div class="ud">Ур: ${u.v}/${u.x}</div><div class="up">${price}💰</div>`;
+        div.addEventListener('click', ()=>{ if(C.s>=price && u.v<u.x) { C.s-=price; F[u.i]++; J(); } });
+        I.d0.appendChild(div);
+      });
+    }
+
+    function renderAchievements() {
+      let ach = [{id:0,n:'10 кликов',e:'🎯'},{id:1,n:'100 кликов',e:'🖱️'},{id:2,n:'1000 кликов',e:'👆'},{id:3,n:'1000💰',e:'💰'},
+        {id:4,n:'10000💰',e:'💵'},{id:5,n:'Престиж 1',e:'🌟'},{id:6,n:'Престиж 5',e:'🌟🌟'},{id:7,n:'10 скинов',e:'🎨'},
+        {id:8,n:'Все скины',e:'👑'},{id:9,n:'Сила 10',e:'💪'},{id:10,n:'Авто 10',e:'🤖'},{id:11,n:'Крит 50%',e:'⚡'},
+        {id:12,n:'Комбо 50',e:'🔥'},{id:13,n:'100 кристаллов',e:'💎'},{id:14,n:'10 PvP побед',e:'⚔️'}];
+      let cond = [()=>C.t>=10,()=>C.t>=100,()=>C.t>=1000,()=>C.s>=1000,()=>C.s>=10000,
+        ()=>C.p>=1,()=>C.p>=5,()=>E.size>=10,()=>E.size>=40,()=>F.a>=10,()=>F.b>=10,()=>F.c>=50,
+        ()=>combo>=50,()=>C.crystals>=100,()=>C.pvpWins>=10];
+      ach.forEach((a,i)=>{ if(!G.includes(a.id) && cond[i]()) G.push(a.id); });
+      I.g0.innerHTML = '';
+      ach.forEach(a=>{ let div = document.createElement('div'); div.className = `ac ${G.includes(a.id)?'unl':''}`; div.innerHTML = `<div class="ae">${a.e}</div><div class="an">${a.n}</div>`; I.g0.appendChild(div); });
+    }
+
+    function renderCases() {
+      let caseGrid = document.getElementById('caseGrid');
+      let cases = [
+        {name:'ОБЫЧНЫЙ КЕЙС',price:500,rarity:'common',chance:0.5},
+        {name:'РЕДКИЙ КЕЙС',price:2000,rarity:'rare',chance:0.3},
+        {name:'ЭПИЧЕСКИЙ КЕЙС',price:10000,rarity:'epic',chance:0.15},
+        {name:'ЛЕГЕНДАРНЫЙ КЕЙС',price:50000,rarity:'legendary',chance:0.04},
+        {name:'МИФИЧЕСКИЙ КЕЙС',price:200000,rarity:'mythic',chance:0.01}
+      ];
+      caseGrid.innerHTML = '';
+      cases.forEach(c=>{
+        let div = document.createElement('div');
+        div.className = `case-item ${c.rarity}`;
+        div.innerHTML = `<div style="font-size:2em">📦</div><div>${c.name}</div><div>${c.price}💰</div>`;
+        div.addEventListener('click',()=>openCase(c));
+        caseGrid.appendChild(div);
+      });
+
+      let allSkinsDiv = document.getElementById('allSkinsList');
+      allSkinsDiv.innerHTML = '';
+      allCaseSkins.forEach(s=>{
+        let owned = E.has(s.e);
+        let div = document.createElement('div');
+        div.className = `si2 ${owned?'sel':''}`;
+        div.innerHTML = `<span class="se">${s.e}</span><div><div class="sn">${s.n}</div><div class="sp">${s.r}</div></div>${owned?'✅':'❌'}`;
+        allSkinsDiv.appendChild(div);
+      });
+    }
+
+    function openCase(caseType) {
+      if(C.s < caseType.price) { alert(`Нужно ${caseType.price}💰`); return; }
+      C.s -= caseType.price;
+      let rareSkins = allCaseSkins.filter(s=>s.r === caseType.rarity);
+      let allRares = [...rareSkins];
+      if(allRares.length === 0) allRares = allCaseSkins;
+      let skin = allRares[Math.floor(Math.random()*allRares.length)];
+      if(!E.has(skin.e)) {
+        E.add(skin.e);
+        alert(`📦 ВЫПАЛ СКИН: ${skin.e} ${skin.n} (${skin.r})`);
+        if(skin.r === 'mythic') alert('✨✨✨ МИФИЧЕСКИЙ СКИН! ✨✨✨');
+        else if(skin.r === 'legendary') alert('⭐ ЛЕГЕНДАРНЫЙ СКИН! ⭐');
+      } else {
+        let refund = Math.floor(caseType.price * 0.3);
+        C.s += refund;
+        alert(`📦 Повтор! +${refund}💰`);
+      }
+      J();
+    }
+
+    function findDuel() {
+      loadLeaderboard().then(()=>{
+        fetch(BIN_URL, { headers: { 'X-Master-Key': API_KEY } }).then(res=>res.json()).then(data=>{
+          let lb = data.record.leaderboard || [];
+          let opponents = lb.filter(p => p.name !== C.n && p.name);
+          if(opponents.length === 0) { alert('Нет других игроков'); return; }
+          let target = opponents[Math.floor(Math.random()*opponents.length)];
+          duelRequests.push({from:C.n, to:target.name, time:Date.now()});
+          saveLocal();
+          alert(`Запрос на дуэль отправлен игроку ${target.name}!`);
+          renderPvP();
+        });
+      });
+    }
+
+    function acceptDuel(from) {
+      duelRequests = duelRequests.filter(r=>r.from !== from);
+      activeDuel = {
+        player1: from,
+        player2: C.n,
+        score1: 0,
+        score2: 0,
+        endTime: Date.now() + 10000
+      };
+      saveLocal();
+      alert(`⚔️ ДУЭЛЬ С ${from} НАЧАЛАСЬ! 10 секунд! ТЫКАЙ!`);
+      renderPvP();
+    }
+
+    function endDuel() {
+      if(!activeDuel) return;
+      let winner = activeDuel.score1 > activeDuel.score2 ? activeDuel.player1 : activeDuel.player2;
+      if(winner === C.n) {
+        C.s += 5000;
+        C.pvpWins++;
+        alert(`🏆 ВЫ ПОБЕДИЛИ! +5000💰 +1 PvP победа!`);
+      } else if(winner === activeDuel.player1 || winner === activeDuel.player2) {
+        alert(`💔 Вы проиграли. ${winner} победил!`);
+      }
+      activeDuel = null;
+      saveLocal();
+      renderPvP();
+      J();
+    }
+
+    function renderPvP() {
+      duelRequests = duelRequests.filter(r => r.to === C.n && Date.now() - r.time < 60000);
+      let requestsDiv = document.getElementById('duelRequests');
+      requestsDiv.innerHTML = '<div class="tt">📨 ЗАПРОСЫ НА ДУЭЛЬ</div>';
+      duelRequests.forEach(req => {
+        let div = document.createElement('div');
+        div.className = 'duel-request';
+        div.innerHTML = `<span>⚔️ ${req.from} вызывает вас!</span>
+                         <button class="bb" data-from="${req.from}">ПРИНЯТЬ</button>
+                         <button class="bb" data-reject="${req.from}">ОТКЛОНИТЬ</button>`;
+        requestsDiv.appendChild(div);
+      });
+
+      document.querySelectorAll('[data-from]').forEach(btn=>{
+        btn.onclick = ()=>{ acceptDuel(btn.dataset.from); };
+      });
+      document.querySelectorAll('[data-reject]').forEach(btn=>{
+        btn.onclick = ()=>{
+          duelRequests = duelRequests.filter(r=>r.from !== btn.dataset.reject);
+          saveLocal();
+          renderPvP();
+        };
+      });
+
+      let activeDiv = document.getElementById('activeDuel');
+      if(activeDuel && Date.now() < activeDuel.endTime) {
+        let isPlayer1 = activeDuel.player1 === C.n;
+        activeDiv.innerHTML = `<div class="tt">⚔️ ДУЭЛЬ С ${isPlayer1 ? activeDuel.player2 : activeDuel.player1}</div>
+                               <div style="font-size:2em; margin:10px">🔥 ТЫКАЙ! 🔥</div>
+                               <div>Ваш счет: ${isPlayer1 ? activeDuel.score1 : activeDuel.score2}</div>
+                               <div>Соперник: ${isPlayer1 ? activeDuel.score2 : activeDuel.score1}</div>
+                               <div>Осталось: ${Math.ceil((activeDuel.endTime-Date.now())/1000)} сек</div>`;
+      } else if(activeDuel && Date.now() >= activeDuel.endTime) {
+        endDuel();
+        activeDiv.innerHTML = '';
+      } else {
+        activeDiv.innerHTML = '';
+      }
+    }
+
+    function renderAdmin() {
+      let adminDiv = document.getElementById('adminControls');
+      adminDiv.innerHTML = `
+        <div class="case-item" id="adminResetAll">🔄 СБРОСИТЬ ВСЕХ ИГРОКОВ (ОЧИСТИТЬ ТАБЛИЦУ)</div>
+        <div class="case-item" id="adminAddMoney">💰 ДОБАВИТЬ 100000💰 СЕБЕ</div>
+        <div class="case-item" id="adminAddCrystals">💎 ДОБАВИТЬ 100💎 СЕБЕ</div>
+        <div class="case-item" id="adminAllSkins">🎨 ВЫДАТЬ ВСЕ СКИНЫ СЕБЕ</div>
+        <div class="case-item" id="adminResetMe">🔄 СБРОСИТЬ СВОЙ ПРОГРЕСС</div>
+        <div class="case-item" id="adminStats">📊 СТАТИСТИКА</div>
+      `;
+      document.getElementById('adminResetAll').onclick = ()=>{
+        if(confirm('Очистить всю мировую таблицу?')) {
+          fetch(UPDATE_URL, { method: 'PUT', headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY }, body: JSON.stringify({ leaderboard: [] }) });
+          alert('Таблица очищена!');
+        }
+      };
+      document.getElementById('adminAddMoney').onclick = ()=>{ C.s += 100000; J(); alert('+100000💰'); };
+      document.getElementById('adminAddCrystals').onclick = ()=>{ C.crystals += 100; J(); alert('+100💎'); };
+      document.getElementById('adminAllSkins').onclick = ()=>{ allCaseSkins.forEach(s=>E.add(s.e)); J(); alert('Все скины выданы!'); };
+      document.getElementById('adminResetMe').onclick = ()=>{ if(confirm('Сбросить свой прогресс?')) { C.s=0; C.p=0; C.t=0; C.crystals=0; C.pvpWins=0; F={a:1,b:0,c:0,d:2,e:0,f:0,g:0,h:0}; E=new Set(['🦫']); C.k='🦫'; G=[]; J(); alert('Прогресс сброшен'); } };
+      document.getElementById('adminStats').onclick = ()=>{ alert(`📊 СТАТИСТИКА\nВаш счет: ${Math.floor(C.s)}\nСкинов: ${E.size}\nPvP побед: ${C.pvpWins}\nКристаллов: ${C.crystals}`); };
+    }
+
+    // ТАБЫ
+    document.querySelectorAll('.tab').forEach(tab=>{
+      tab.addEventListener('click',()=>{
+        document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+        tab.classList.add('active');
+        let tabId = tab.dataset.tab;
+        document.getElementById(`tab-${tabId}`).classList.add('active');
+        if(tabId === 'cases') renderCases();
+        if(tabId === 'pvp') renderPvP();
+        if(tabId === 'admin') {
+          let pwd = prompt('🔐 АДМИН-ПАНЕЛЬ\nВведите пароль:');
+          if(pwd === '47lysejes1') renderAdmin();
+          else { alert('Неверный пароль!'); document.querySelector('.tab[data-tab="main"]').click(); }
+        }
+      });
+    });
+
+    // КЛИК
+    I.b0.addEventListener('click', function(e){
+      let now = Date.now();
+      if(now - lastClickTime < 800) combo++;
+      else combo = 1;
+      lastClickTime = now;
+      if(combo > 99) combo = 99;
+      if(activeDuel) {
+        if(activeDuel.player1 === C.n) activeDuel.score1++;
+        else if(activeDuel.player2 === C.n) activeDuel.score2++;
+        saveLocal();
+        renderPvP();
+      }
+      let X = e.clientX - I.b0.getBoundingClientRect().left;
+      let Y = e.clientY - I.b0.getBoundingClientRect().top;
+      let comboMult = getComboMultiplier();
+      let Z = F.a * (1 + C.p*0.1) * comboMult;
+      let AA = '';
+      if(Math.random()*100 < F.c) { Z *= F.d; AA = '💥 КРИТ!'; }
+      if(F.g>0 && Math.random()*100<5) { Z *= 5; AA = '💀 МЕГА!'; }
+      if(Math.random()*100 < F.e) { Z = Math.floor(Z*1.5); AA = '🍀 УДАЧА!'; }
+      if(F.h>0 && Math.random()*100<10) { Z += F.b*5; AA = '⛓️ ЦЕПЬ!'; }
+      if(F.f>0 && Math.random()*100<15) { Z *= 2; AA = '2️⃣ ДВОЙНОЙ!'; }
+      C.s += Math.floor(Z);
+      C.t++;
+      let W = document.createElement('div');
+      W.className = 'ce';
+      W.textContent = `+${Math.floor(Z)}💰 ${AA} ${comboMult>1?'x'+comboMult:''}`;
+      W.style.left = (X-20)+'px';
+      W.style.top = (Y-20)+'px';
+      I.b0.appendChild(W);
+      setTimeout(()=>W.remove(), 1000);
+      I.b1.style.transform = 'scale(0.9)';
+      setTimeout(()=>I.b1.style.transform = 'scale(1)', 100);
+      J();
+    });
+
+    // АВТОКЛИК
+    setInterval(()=>{ if(F.b>0) { C.s += Math.floor(F.b * (1 + C.p*0.1)); J(); } }, 1000);
+    setInterval(()=>{ if(combo > 0) combo = Math.max(0, combo-1); J(); }, 2000);
+    setInterval(()=>{ saveToLeaderboard(); }, 60000);
+
+    // КНОПКИ
+    document.getElementById('buyGemsBtn').addEventListener('click', ()=>{
+      let amount = prompt('Сколько алмазов купить? (1💎 = 1000💰)', '1');
+      let num = parseInt(amount);
+      if(num && num > 0 && C.s >= num * 1000) {
+        C.s -= num * 1000;
+        C.crystals += num;
+        alert(`✅ Куплено ${num}💎 за ${num*1000}💰`);
+        J();
+      } else alert('❌ Недостаточно денег!');
+    });
+    document.getElementById('buy10gems').addEventListener('click', ()=>{ if(C.s>=9000){C.s-=9000; C.crystals+=10; alert('+10💎'); J();} else alert('Нужно 9000💰'); });
+    document.getElementById('buy50gems').addEventListener('click', ()=>{ if(C.s>=40000){C.s-=40000; C.crystals+=50; alert('+50💎'); J();} else alert('Нужно 40000💰'); });
+    document.getElementById('buy100gems').addEventListener('click', ()=>{ if(C.s>=75000){C.s-=75000; C.crystals+=100; alert('+100💎'); J();} else alert('Нужно 75000💰'); });
+    document.getElementById('buy500gems').addEventListener('click', ()=>{ if(C.s>=300000){C.s-=300000; C.crystals+=500; alert('+500💎'); J();} else alert('Нужно 300000💰'); });
+    document.getElementById('findDuelBtn').addEventListener('click', findDuel);
+    document.getElementById('refreshLB').addEventListener('click', ()=>{ loadLeaderboard(); saveToLeaderboard(); });
+    document.getElementById('i0').addEventListener('click', ()=>{ let n = prompt('Имя:', C.n); if(n) { C.n = n.substring(0,15); J(); } });
+    document.getElementById('i1').addEventListener('click', ()=>{ if(confirm('Сбросить всё?')) { localStorage.clear(); location.reload(); } });
+    document.getElementById('i2').addEventListener('click', ()=>{ navigator.clipboard?.writeText(window.location.href).then(()=>alert('Ссылка скопирована!')); });
+    document.getElementById('i3').addEventListener('click', ()=>{ let b = {n:C.n,s:C.s,p:C.p,k:C.k,e:[...E],u:F,a:G,cr:C.crystals,pvp:C.pvpWins}; localStorage.setItem('backup',JSON.stringify(b)); alert('Сохранено'); });
+    document.getElementById('i4').addEventListener('click', ()=>{ let b = localStorage.getItem('backup'); if(b) { try { let d=JSON.parse(b); C.n=d.n; C.s=d.s; C.p=d.p; C.k=d.k; E=new Set(d.e); F=d.u; G=d.a||[]; C.crystals=d.cr||0; C.pvpWins=d.pvp||0; J(); alert('Загружено'); } catch(e){} } });
+    document.getElementById('f0').addEventListener('click', ()=>{ if(C.s>=10000 && confirm('Престиж?')) { C.p++; C.s=0; F={a:1+C.p,b:0+C.p,c:0+C.p*2,d:2,e:0+C.p,f:0,g:0,h:0}; J(); } });
+
+    J();
+    loadLeaderboard();
+    renderCases();
+    setInterval(()=>{ if(activeDuel) renderPvP(); }, 500);
+  })();
+</script>
+</body>
+</html>
