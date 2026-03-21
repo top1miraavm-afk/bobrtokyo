@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>🐹 БОБР ТОКИО | МЕГА ФИНАЛ</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;user-select:none;-webkit-tap-highlight-color:transparent}
+    body{background:linear-gradient(135deg,#0a2f0a,#1a4a1a,#0e3a0e);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px}
+    .game-wrapper{max-width:1700px;width:100%;background:linear-gradient(145deg,#2a241a,#1e1912);border-radius:70px;border:6px solid #f5cf8a;box-shadow:0 30px 0 #8b6239,0 35px 45px #0009;padding:24px}
+    .tabs-bar{display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap;justify-content:center}
+    .tab-btn{background:linear-gradient(145deg,#3a2a1c,#261d12);color:#fff;padding:8px 24px;border-radius:50px;cursor:pointer;font-weight:bold;border:2px solid #f0c87a;transition:.2s;font-size:.9rem}
+    .tab-btn.active{background:linear-gradient(145deg,#ffdd99,#ffc46b);color:#2a1c0e;border-color:#ffb347;transform:scale(1.02)}
+    .tab-btn:hover{transform:translateY(-2px);background:#f5cf88;color:#2a1a0a}
+    .tab-pane{display:none;animation:fadeSlide .2s ease;color:#fff}
+    .tab-pane.active{display:block}
+    @keyframes fadeSlide{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+    .hero-header{display:flex;justify-content:space-between;align-items:center;background:linear-gradient(145deg,#3a2a1c,#281f12);padding:10px 24px;border-radius:70px;margin-bottom:20px;border:4px solid #f0ca88;flex-wrap:wrap;gap:12px}
+    .stats-group{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+    .nick-card{background:linear-gradient(145deg,#ffde9e,#f5c468);padding:6px 24px;border-radius:50px;font-size:1.1rem;font-weight:bold;color:#2a1c0e;border:3px solid #ffda8a;cursor:pointer;box-shadow:0 3px 0 #aa7840}
+    .stat-pill{background:#2d1f12;color:#fff;padding:5px 18px;border-radius:40px;font-weight:bold;border:2px solid #eebb6a;font-size:.8rem}
+    .score-badge{background:linear-gradient(145deg,#ffda8a,#f5bc60);padding:6px 28px;border-radius:50px;font-size:1.3rem;font-weight:bold;color:#2a1c0e;border:3px solid #ffeaad}
+    .core-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:20px;margin-bottom:20px}
+    @media (max-width:1000px){.core-grid{grid-template-columns:1fr}}
+    .clicker-zone{background:linear-gradient(145deg,#f0cc8a,#e8bc6a);padding:18px;border-radius:55px;border:5px solid #ffdfa5;text-align:center}
+    .bobr-pad{background:linear-gradient(145deg,#85b85a,#6da042);border-radius:75px;padding:15px;margin:12px 0;border:5px dashed #fff8e0;cursor:pointer;position:relative;overflow:hidden;min-height:200px;display:flex;align-items:center;justify-content:center;transition:.05s linear;box-shadow:0 10px 0 #3c621c}
+    .bobr-pad:active{transform:translateY(4px);box-shadow:0 4px 0 #3c621c;background:#78ac48}
+    .bobr-giant{font-size:130px;filter:drop-shadow(10px 12px 0 #2f5215);pointer-events:none}
+    @media (max-width:550px){.bobr-giant{font-size:100px}}
+    .fly-money{position:fixed;pointer-events:none;font-size:24px;font-weight:bold;animation:moneyFly .8s ease-out forwards;z-index:99999;color:#ffea80;text-shadow:2px 2px 0 #b45f1b;white-space:nowrap;font-family:monospace;transform:translate(-50%,-50%)}
+    @keyframes moneyFly{0%{opacity:1;transform:translate(-50%,-50%) scale(.7)}100%{opacity:0;transform:translate(-50%,calc(-50% - 80px)) scale(1.3)}}
+    .duel-banner{background:linear-gradient(145deg,#c0392b,#a52214);border-radius:45px;padding:10px;margin-bottom:12px;text-align:center;animation:pulse 1s infinite}
+    .duel-banner h3{color:#ffdd88;font-size:1.1rem;margin-bottom:3px}
+    .duel-banner p{color:#fff;font-size:1rem;font-weight:bold}
+    .duel-countdown{background:linear-gradient(145deg,#f39c12,#e67e22);border-radius:45px;padding:8px;margin-bottom:12px;text-align:center;animation:pulseOrange .5s infinite}
+    @keyframes pulseOrange{0%{box-shadow:0 0 0 0 #f39c12b3}70%{box-shadow:0 0 0 8px #f39c1200}100%{box-shadow:0 0 0 0 #f39c1200}}
+    @keyframes pulse{0%{box-shadow:0 0 0 0 #c0392bb3}70%{box-shadow:0 0 0 8px #c0392b00}100%{box-shadow:0 0 0 0 #c0392b00}}
+    .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;background:#2b1f13;padding:10px;border-radius:45px;margin:10px 0;color:#fff;font-weight:bold;border:2px solid #eebb6a}
+    .stat-cell{display:flex;flex-direction:column;align-items:center;gap:3px;text-align:center;font-size:.8rem}
+    .stat-number{font-size:1.1rem;color:#ffecb3;font-weight:bold}
+    .shop-card{background:linear-gradient(145deg,#322618,#241e12);padding:16px;border-radius:55px;border:5px solid #f0c87a}
+    .section-header{font-size:1.2rem;text-align:center;color:#fff;margin-bottom:12px;text-shadow:2px 2px 0 #4a321a;font-weight:bold}
+    .skin-scroll{display:grid;gap:6px;max-height:400px;overflow-y:auto;margin-bottom:14px;padding-right:5px}
+    .skin-item{background:#2b1f13;padding:8px 12px;border-radius:40px;display:flex;align-items:center;gap:12px;border:3px solid #eebb6a;cursor:pointer;transition:.15s;color:#fff;font-size:.85rem}
+    .skin-item:hover{transform:translateX(4px);border-color:#ffdd99;background:#3e2e1c}
+    .skin-item.active-skin{border:4px solid #ffcf7a;background:#5a4028;box-shadow:0 0 8px #ffc069}
+    .skin-emoji{font-size:1.8rem;min-width:45px;text-align:center}
+    .skin-bonus{font-size:.65rem;color:#ffd966;margin-left:auto}
+    .upgrade-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:12px 0;max-height:450px;overflow-y:auto;padding-right:5px}
+    .upgrade-block{background:#2b1f13;padding:8px;border-radius:35px;border:2px solid #eebb6a;text-align:center;cursor:pointer;transition:.1s;color:#fff;font-size:.7rem}
+    .upgrade-block:hover{transform:translateY(-2px);border-color:#ffdd99;background:#42321d}
+    .upgrade-block.disabled{opacity:.45;pointer-events:none}
+    .btn-prestige{width:100%;background:linear-gradient(145deg,#e55a2a,#c43f0f);border:none;font-size:1rem;font-weight:bold;padding:10px;border-radius:50px;border-bottom:5px solid #962d00;color:#fff;cursor:pointer;margin-top:12px}
+    .btn-prestige:active{transform:translateY(2px);border-bottom-width:2px}
+    .achievement-panel{background:#231d12;border-radius:45px;padding:12px;border:5px solid #eebb6a;margin:18px 0}
+    .achieve-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+    .achieve-badge{background:#2f2418;padding:6px;border-radius:30px;text-align:center;border:2px solid #eebb6a;font-size:.65rem;color:#fff}
+    .achieve-badge.unlocked{border-color:gold;background:#6a462e;box-shadow:0 0 6px gold}
+    .lb-container{background:#231d12;border-radius:45px;padding:12px;border:5px solid #eebb6a;margin-top:18px}
+    .lb-table{width:100%;border-collapse:collapse;color:#fff;font-size:.7rem}
+    .lb-table th{background:#3e2d1c;padding:6px;color:#ffefcf}
+    .lb-table td{padding:5px;text-align:center;border-bottom:1px solid #e2aa5a}
+    .footer-buttons{display:flex;justify-content:space-between;margin-top:18px;flex-wrap:wrap;gap:8px}
+    .foot-btn{background:#ad7842;border:none;color:#fff;padding:6px 12px;border-radius:40px;font-weight:bold;cursor:pointer;border-bottom:3px solid #6b451f;flex:1;font-size:.7rem;text-align:center}
+    .foot-btn:active{transform:translateY(2px);border-bottom-width:2px}
+    .gold-special,.green-special,.purple-special{background:linear-gradient(145deg,#ffdd88,#e8a834);border-radius:40px;padding:6px;margin-bottom:8px;text-align:center;font-weight:bold;cursor:pointer;color:#2a1a0a;font-size:.8rem}
+    .green-special{background:linear-gradient(145deg,#4cae4c,#2d752d);color:#fff}
+    .purple-special{background:linear-gradient(145deg,#a45de8,#7733bb);color:#fff}
+    .case-box{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+    .case-card{background:#2d2115;padding:8px;border-radius:30px;text-align:center;border:2px solid #e2aa5a;cursor:pointer;transition:.1s;color:#fff;font-size:.75rem}
+    .case-card:hover{transform:translateY(-2px);background:#4c341d;border-color:#ffcf7a}
+    .free-case{background:linear-gradient(145deg,#27ae60,#1e8449);border-color:#f1c40f;animation:pulseGold 1.5s infinite}
+    @keyframes pulseGold{0%{box-shadow:0 0 0 0 #f1c40fb3}70%{box-shadow:0 0 0 8px #f1c40f00}100%{box-shadow:0 0 0 0 #f1c40f00}}
+    .admin-panel-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px;max-height:500px;overflow-y:auto}
+    .admin-card{background:#2d2115;padding:10px;border-radius:35px;text-align:center;border:2px solid #ffaa44;cursor:pointer;transition:.1s;color:#fff;font-weight:bold;font-size:.75rem}
+    .admin-card:hover{transform:translateY(-2px);background:#4a351f;border-color:#ffcc66}
+    .admin-section{background:#1e1910;border-radius:40px;padding:10px;margin-top:10px}
+    .admin-section-title{font-size:.9rem;color:#ffd966;text-align:center;margin-bottom:8px}
+    .chat-container{background:#2b1f13;border-radius:40px;padding:10px;height:250px;display:flex;flex-direction:column;margin-bottom:12px}
+    .chat-messages{flex:1;overflow-y:auto;font-size:.75rem;color:#fff;margin-bottom:6px;padding:4px}
+    .chat-input-area{display:flex;gap:6px}
+    .chat-input{flex:1;background:#4e311d;border:2px solid #e2aa5a;border-radius:35px;padding:6px 12px;color:#fff;outline:none;font-size:.75rem}
+    .bonus-day{background:linear-gradient(145deg,#ffaa44,#ff7700);border-radius:40px;padding:6px;margin-bottom:8px;text-align:center;font-weight:bold;cursor:pointer;color:#fff;animation:glow 1.5s infinite;font-size:.8rem}
+    @keyframes glow{0%{box-shadow:0 0 0 0 #ff7700b3}70%{box-shadow:0 0 0 8px #ff770000}100%{box-shadow:0 0 0 0 #ff770000}}
+    .daily-quest{background:linear-gradient(145deg,#3498db,#2980b9);border-radius:40px;padding:6px;margin-bottom:8px;text-align:center;color:#fff;font-size:.8rem;cursor:pointer}
+    .fp{color:gold}.sp{color:silver}.tp{color:#cd7f32}
+    ::-webkit-scrollbar{width:5px}
+    ::-webkit-scrollbar-track{background:#2b1f13;border-radius:8px}
+    ::-webkit-scrollbar-thumb{background:#eebb6a;border-radius:8px}
+  </style>
+</head>
+<body>
+<div class="game-wrapper">
+  <div class="hero-header">
+    <div class="stats-group">
+      <div class="nick-card" id="nicknameBtn">🐹 Игрок</div>
+      <div class="stat-pill" id="prestigeView">🌟0</div>
+      <div class="stat-pill" id="clicksView">🖱️0</div>
+      <div class="stat-pill" id="comboView">🔥0</div>
+      <div class="stat-pill" id="crystalView">💎0</div>
+      <div class="stat-pill" id="skinBonusView">✨+0%</div>
+    </div>
+    <div class="score-badge" id="scoreView">💰0</div>
+  </div>
+
+  <div class="tabs-bar">
+    <div class="tab-btn active" data-tab="main">🏠 ГЛАВНАЯ</div>
+    <div class="tab-btn" data-tab="cases">📦 КЕЙСЫ</div>
+    <div class="tab-btn" data-tab="pvp">⚔️ ДУЭЛИ</div>
+    <div class="tab-btn" data-tab="chat">💬 ЧАТ</div>
+    <div class="tab-btn" data-tab="shop">💎 МАГАЗИН</div>
+    <div class="tab-btn" data-tab="events">🎉 СОБЫТИЯ</div>
+    <div class="tab-btn" data-tab="admin">🔧 АДМИН</div>
+  </div>
+
+  <div class="tab-pane active" id="tab-main">
+    <div class="core-grid">
+      <div class="clicker-zone">
+        <div id="duelNotification" style="display:none;" class="duel-banner"></div>
+        <div id="duelCountdown" style="display:none;" class="duel-countdown"></div>
+        <div class="daily-quest" id="dailyQuestBtn">📜 ЗАДАНИЕ: накликать 1000💰 → +5000💰</div>
+        <div class="bonus-day" id="luckDayBtn">🍀 УДАЧА ДНЯ! +50% на 30 мин (50💎)</div>
+        <div class="gold-special" id="dailyBtn">🎁 ЕЖЕДНЕВНЫЙ БОНУС +1000💰</div>
+        <div class="purple-special" id="lotteryBtn">🎰 ЛОТЕРЕЯ (500💰)</div>
+        <div class="bobr-pad" id="clickArea"><div class="bobr-giant" id="bobrFace">🦫</div></div>
+        <div class="stats-row">
+          <div class="stat-cell">⚡<div class="stat-number" id="powerStat">1</div></div>
+          <div class="stat-cell">🔄<div class="stat-number" id="autoStat">0</div></div>
+          <div class="stat-cell">💥<div class="stat-number" id="critStat">0%</div></div>
+          <div class="stat-cell">🍀<div class="stat-number" id="luckStat">0%</div></div>
+        </div>
+        <div class="stats-row">
+          <div class="stat-cell">💰/тык<div class="stat-number" id="perClickStat">1</div></div>
+          <div class="stat-cell">⏱️/с<div class="stat-number" id="perSecStat">0</div></div>
+          <div class="stat-cell">⚡x<div class="stat-number" id="comboMultStat">1</div></div>
+          <div class="stat-cell">✨x<div class="stat-number" id="totalMultStat">1</div></div>
+        </div>
+        <button class="btn-prestige" id="prestigeAction">🌟 ПРЕСТИЖ (10к💰) + вечный бонус</button>
+      </div>
+      <div class="shop-card">
+        <div class="section-header">🎨 ВСЕ СКИНЫ (150+)</div>
+        <div class="skin-scroll" id="skinsList"></div>
+        <div class="section-header">⚡ МОДИФИКАТОРЫ (20+)</div>
+        <div class="upgrade-grid" id="upgradesPanel"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-pane" id="tab-cases">
+    <div class="section-header">📦 КЕЙСЫ</div>
+    <div class="case-box" id="casesGrid"></div>
+    <div class="section-header" style="margin-top:15px">🎁 БЕСПЛАТНЫЙ КЕЙС (каждые 24 часа)</div>
+    <div class="case-box"><div class="case-card free-case" id="freeCaseBtn">🎁 БЕСПЛАТНЫЙ КЕЙС<div id="freeCaseTimer" style="font-size:0.65rem; margin-top:4px;">Доступен!</div></div></div>
+    <div class="section-header" style="margin-top:15px">💎 ПРЕМИУМ КЕЙСЫ</div>
+    <div class="case-box" id="premiumCaseGrid"></div>
+    <div class="section-header" style="margin-top:15px">🎲 ВСЯ КОЛЛЕКЦИЯ</div>
+    <div class="skin-scroll" id="fullSkinsList"></div>
+  </div>
+
+  <div class="tab-pane" id="tab-pvp">
+    <div class="section-header">👥 ВЫБЕРИ СОПЕРНИКА</div>
+    <div id="playersListDuel" class="skin-scroll"></div>
+    <div id="duelRequestsBlock" style="margin-top:12px;"></div>
+  </div>
+
+  <div class="tab-pane" id="tab-chat">
+    <div class="section-header">💬 ГЛОБАЛЬНЫЙ ЧАТ</div>
+    <div class="chat-container"><div class="chat-messages" id="globalChatMsgs"></div><div class="chat-input-area"><input type="text" id="chatInput" class="chat-input" placeholder="Сообщение..."><button class="foot-btn" id="sendGlobalBtn">📤</button></div></div>
+    <div class="section-header" style="margin-top:12px">📨 ЛИЧНЫЕ СООБЩЕНИЯ</div>
+    <div style="display:flex; gap:8px; margin-bottom:8px;"><select id="privateSelect" class="chat-input" style="flex:1;"></select><input type="text" id="privateInput" class="chat-input" style="flex:2;" placeholder="Личное сообщение..."><button class="foot-btn" id="sendPrivateBtn">📨</button></div>
+    <div class="chat-container" style="height:120px;"><div class="chat-messages" id="privateChatArea"></div></div>
+  </div>
+
+  <div class="tab-pane" id="tab-shop">
+    <div class="section-header">💎 КУПИТЬ АЛМАЗЫ</div>
+    <div class="case-box"><div class="case-card" data-gems="10" data-price="9000">10💎 — 9000💰</div><div class="case-card" data-gems="50" data-price="40000">50💎 — 40000💰</div><div class="case-card" data-gems="100" data-price="75000">100💎 — 75000💰</div><div class="case-card" data-gems="500" data-price="300000">500💎 — 300000💰</div><div class="case-card" data-gems="1000" data-price="500000">1000💎 — 500000💰</div></div>
+    <div class="section-header">🛡️ БУСТЕРЫ</div>
+    <div class="case-box"><div class="case-card" id="critBoostBtn">⚡ КРИТ +20% (500💎)</div><div class="case-card" id="luckBoostBtn">🍀 УДАЧА +20% (500💎)</div><div class="case-card" id="autoBoostBtn">🤖 АВТО +5 (1000💎)</div><div class="case-card" id="megaBoostBtn">💥 МЕГА БУСТ (2000💎) +50% на 10 мин</div><div class="case-card" id="goldenBoostBtn">👑 ЗОЛОТОЙ БУСТ (5000💎) x2 на 1 час</div><div class="case-card" id="timeWarpBtn">⏰ ВРЕМЕННОЙ СДВИГ (1000💎) +100% на 5 мин</div><div class="case-card" id="bonusHourBtn">⭐ СЧАСТЛИВЫЙ ЧАС (500💎) x3 на 1 час</div></div>
+  </div>
+
+  <div class="tab-pane" id="tab-events">
+    <div class="gold-special" id="doubleEventBtn">✨ x2 ДЕНЬГИ (200💎 на 1 час)</div>
+    <div class="gold-special" id="freeCaseEventBtn">🎁 БЕСПЛАТНЫЙ КЕЙС (каждые 10 мин)</div>
+    <div class="gold-special" id="tournamentBtn">🏆 ТУРНИР (топ-3 +5000💰)</div>
+    <div class="gold-special" id="superJackpotBtn">💎 СУПЕР ДЖЕКПОТ (1000💎) шанс x1000</div>
+  </div>
+
+  <div class="tab-pane" id="tab-admin"><div class="section-header">🔧 АДМИН-ПАНЕЛЬ</div><div id="adminPanel"></div></div>
+
+  <div class="achievement-panel"><div class="section-header">🏆 ДОСТИЖЕНИЯ</div><div class="achieve-grid" id="achievementsGrid"></div></div>
+  <div class="lb-container"><div style="display:flex; justify-content:space-between; flex-wrap:wrap; margin-bottom:8px;"><h2 style="color:#ffecb3; font-size:1.1rem;">🌍 МИРОВОЙ ТОП</h2><button id="refreshLeaderboardBtn" style="background:#6b482c; color:#ffecb3; border:2px solid #e2aa5a; padding:4px 14px; border-radius:35px; cursor:pointer;">🔄 ОБНОВИТЬ</button></div><div id="top1Timer" style="text-align:center; color:#ffcf7a; font-size:0.7rem;"></div><table class="lb-table"><thead><th>#</th><th>Игрок</th><th>💰</th><th>🌟</th><th>💎</th><th>🎨</th><th>🏆</th></thead><tbody id="leaderboardBody"></tbody>   </div>
+  <div class="footer-buttons"><button class="foot-btn" id="changeNameFoot">✏️ Имя</button><button class="foot-btn" id="resetMySelfBtn">🔄 Сброс</button><button class="foot-btn" id="shareLinkFoot">📤 Поделиться</button><button class="foot-btn" id="exportBackupBtn">💾 Сохранить</button><button class="foot-btn" id="importBackupBtn">📂 Загрузить</button></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  (async function(){
+    const SURL="https://mrccbglfxxswyaqukqal.supabase.co";
+    const SKEY="sb_publishable_c8KMtLFrVJdfKDE9fiZvAA_Xe5KG5Zd";
+    const sb=window.supabase.createClient(SURL,SKEY);
+
+    const emojis=['🦫','🐹','🐼','🦊','🐸','🐲','👽','💎','👑','🌈','⚡','🔥','❄️','🌍','🤖','🎮','⚽','🍕','🎸','💀','6️⃣7️⃣','👾','⭐','🐉','👻','🤴','🐺','🦅','🐋','🦄','👁️','⚜️','🎭','🔮','⚔️','🏆','🐙','🦑','🐬','🦈','🐊','🦖','🦕','🐪','🦙','🐘','🦣','🦏','🐫','🦒','🐅','🐆','🐎','🦌','🦍','🐒','🐧','🐦','🦜','🕊️','🦚','🦢','🦩','🐝','🐞','🦋','🐚','🌵','🌲','🍄','🌙','☀️','🌠','💧','🌊','🌪️','☄️','💫','🔮','🎯','🏹','🛡️','🎖️','🔑','🗝️','📿','🧿','🎪','🎨','🎼','🎹','🥁','🎺','🎷','🎻','🪕','🎤','🎧','📀','💿','📹','🎥','📷','🔦','💡','🔋','🕯️','🧨','🎆','🎇','✨','🌟','💫','🌠','🔥','💧','❄️','⚡','🌈','⭐','🌙','☀️','🌍','🌎','🌏','🪐','🌌','🌀','🌊','🌋','🗻','🏔️','⛰️','🌄','🌅','🌇','🌆','🏙️','🌃','🌉','🌁','🎠','🎡','🎢','🏰','🏯','🗼','🗽','🏛️','🕍','⛪','🕌','🕋','⛲','🌉','🌊'];
+    const names=['Бобр','Хомяк','Панда','Лис','Ква','Дракон','Инопл','Алмаз','Король','Радуга','Молния','Огонь','Лёд','Космос','Робот','Геймер','Спорт','Пицца','Рок','Смерть','67','Вирус','Звезда','Дракон','Призрак','Король','Волк','Орёл','Кит','Единорог','Всевидящий','Золотой','Театр','Маг','Воин','Чемпион','Осьминог','Кальмар','Дельфин','Акула','Крокодил','Тирекс','Бронтозавр','Верблюд','Лама','Слон','Мамонт','Носорог','Жираф','Тигр','Леопард','Лошадь','Олень','Горилла','Обезьяна','Пингвин','Птица','Попугай','Голубь','Павлин','Лебедь','Фламинго','Пчела','Жук','Бабочка','Ракушка','Кактус','Дерево','Гриб','Луна','Солнце','Метеор','Вода','Волна','Торнадо','Комета','Искры','Хрусталь','Мишень','Лук','Меч','Щит','Медаль','Ключ','Свиток','Четки','Амулет','Цирк','Палитра','Ноты','Пианино','Барабан','Труба','Саксофон','Скрипка','Укулеле','Микрофон','Наушники','Диск','Кассета','Камера','Проектор','Фотоаппарат','Фонарик','Лампочка','Батарейка','Свеча','Петарда','Фейерверк','Салют','Искры','Сияние','Звезда','Комета','Огонь','Вода','Снег','Молния','Радуга','Звезда','Луна','Солнце','Земля','Марс','Юпитер','Сатурн','Галактика','Вихрь','Океан','Вулкан','Гора','Пик','Рассвет','Закат','Город','Ночь','Мост','Туман','Аттракцион','Колесо','Горка','Замок','Башня','Статуя','Храм','Церковь','Мечеть','Кааба','Фонтан','Мост','Волна'];
+    const skinBonusList=[{bonus:'power',val:1,desc:'+1 к силе'},{bonus:'power',val:2,desc:'+2 к силе'},{bonus:'auto',val:1,desc:'+1 авто'},{bonus:'crit',val:2,desc:'+2% крита'},{bonus:'luck',val:2,desc:'+2% удачи'},{bonus:'power',val:5,desc:'+5 к силе'},{bonus:'all',val:2,desc:'+2% ко всему'},{bonus:'crystal',val:5,desc:'+5% кристаллов'},{bonus:'prestige',val:1,desc:'+1% престижа'},{bonus:'all',val:5,desc:'+5% ко всему'},{bonus:'crit',val:5,desc:'+5% крита'},{bonus:'power',val:10,desc:'+10 к силе'},{bonus:'auto',val:3,desc:'+3 авто'},{bonus:'luck',val:5,desc:'+5% удачи'},{bonus:'all',val:10,desc:'+10% ко всему'}];
+    let skins=[];
+    for(let i=0;i<Math.min(emojis.length,155);i++){
+      let rr='common';
+      if(i>=125) rr='mythic';
+      else if(i>=100) rr='legendary';
+      else if(i>=75) rr='epic';
+      else if(i>=40) rr='rare';
+      let bb=skinBonusList[i%skinBonusList.length];
+      skins.push({e:emojis[i],n:names[i]||'Скин'+(i+1),r:rr,bonus:bb,bonusDesc:bb.desc});
+    }
+
+    let p={
+      n:localStorage.bobrName||'Игрок_'+Math.floor(Math.random()*1000),
+      s:parseFloat(localStorage.bobrScore)||0,
+      pr:parseInt(localStorage.bobrPrestige)||0,
+      k:localStorage.bobrSkin||'🦫',
+      t:parseInt(localStorage.bobrClicks)||0,
+      lastDaily:parseInt(localStorage.bobrLastDaily)||0,
+      lastFree:parseInt(localStorage.bobrLastFree)||0,
+      lastFreeCase:parseInt(localStorage.bobrLastFreeCase)||0,
+      lastQuest:parseInt(localStorage.bobrLastQuest)||0,
+      questProg:parseInt(localStorage.bobrQuestProgress)||0,
+      cry:parseInt(localStorage.bobrCrystals)||0,
+      pvpW:parseInt(localStorage.bobrPvpWins)||0,
+      doubleUntil:parseInt(localStorage.bobrDouble)||0,
+      luckDayUntil:parseInt(localStorage.bobrLuckDay)||0,
+      megaUntil:parseInt(localStorage.bobrMegaBoost)||0,
+      goldenUntil:parseInt(localStorage.bobrGoldenBoost)||0,
+      timeWarpUntil:parseInt(localStorage.bobrTimeWarp)||0,
+      bonusHourUntil:parseInt(localStorage.bobrBonusHour)||0,
+      topHold:parseInt(localStorage.bobrTopHold)||0
+    };
+    let owned=new Set(JSON.parse(localStorage.bobrSkins||'["🦫"]'));
+    let up={
+      a:parseInt(localStorage.u_a)||1,b:parseInt(localStorage.u_b)||0,c:parseInt(localStorage.u_c)||0,d:2,
+      e:parseInt(localStorage.u_e)||0,f:parseInt(localStorage.u_f)||0,g:parseInt(localStorage.u_g)||0,
+      h:parseInt(localStorage.u_h)||0,i:parseInt(localStorage.u_i)||0,j:parseInt(localStorage.u_j)||0,
+      k:parseInt(localStorage.u_k)||0,l:parseInt(localStorage.u_l)||0,m:parseInt(localStorage.u_m)||0,
+      n:parseInt(localStorage.u_n)||0,o:parseInt(localStorage.u_o)||0,p:parseInt(localStorage.u_p)||0,
+      q:parseInt(localStorage.u_q)||0,r:parseInt(localStorage.u_r)||0,s:parseInt(localStorage.u_s)||0
+    };
+    let ach=JSON.parse(localStorage.ach||'[]');
+    let combo=0,lastClick=0,activeDuel=null,duelInt=null,privMsg=JSON.parse(localStorage.privateMsg||'[]');
+
+    function getSkinBonusVal(){let sk=skins.find(x=>x.e===p.k);if(!sk)return 0;let v=sk.bonus.val;if(up.s>0)v*=(1+up.s*0.05);return v;}
+    function getSkinBonusType(){let sk=skins.find(x=>x.e===p.k);return sk?sk.bonus.bonus:null;}
+    function getMoneyMult(){
+      let m=1;
+      if(p.doubleUntil&&Date.now()<p.doubleUntil)m*=2;
+      if(p.luckDayUntil&&Date.now()<p.luckDayUntil)m*=1.5;
+      if(p.megaUntil&&Date.now()<p.megaUntil)m*=1.5;
+      if(p.goldenUntil&&Date.now()<p.goldenUntil)m*=2;
+      if(p.timeWarpUntil&&Date.now()<p.timeWarpUntil)m*=2;
+      if(p.bonusHourUntil&&Date.now()<p.bonusHourUntil)m*=3;
+      if(up.i>0)m*=(1+up.i*0.1);
+      if(up.j>0)m*=(1+up.j*0.05);
+      let bt=getSkinBonusType();
+      if(bt==='all'||bt==='power')m*=(1+getSkinBonusVal()/100);
+      return m;
+    }
+    function getComboMult(){
+      let b=1;
+      if(combo>=50)b=3;else if(combo>=30)b=2.5;else if(combo>=20)b=2;else if(combo>=10)b=1.5;else if(combo>=5)b=1.2;
+      if(up.m>0)b*=(1+up.m*0.05);
+      return b;
+    }
+    function getAutoVal(){let a=up.b;if(up.k>0)a*=(1+up.k*0.05);if(getSkinBonusType()==='auto')a+=getSkinBonusVal();return Math.floor(a);}
+    function saveAll(){
+      localStorage.bobrName=p.n;localStorage.bobrScore=p.s;localStorage.bobrPrestige=p.pr;
+      localStorage.bobrSkin=p.k;localStorage.bobrSkins=JSON.stringify([...owned]);
+      localStorage.bobrClicks=p.t;localStorage.bobrLastDaily=p.lastDaily;localStorage.bobrLastFree=p.lastFree;
+      localStorage.bobrLastFreeCase=p.lastFreeCase;localStorage.bobrLastQuest=p.lastQuest;localStorage.bobrQuestProgress=p.questProg;
+      localStorage.bobrCrystals=p.cry;localStorage.bobrPvpWins=p.pvpW;localStorage.bobrDouble=p.doubleUntil;
+      localStorage.bobrLuckDay=p.luckDayUntil;localStorage.bobrMegaBoost=p.megaUntil;localStorage.bobrGoldenBoost=p.goldenUntil;
+      localStorage.bobrTimeWarp=p.timeWarpUntil;localStorage.bobrBonusHour=p.bonusHourUntil;localStorage.bobrTopHold=p.topHold;
+      for(let k in up)localStorage.setItem(`u_${k}`,up[k]);
+      localStorage.ach=JSON.stringify(ach);localStorage.privateMsg=JSON.stringify(privMsg);
+    }
+    function refreshUI(){
+      let mult=1+p.pr*0.1,skinBonus=getSkinBonusVal();
+      document.getElementById('nicknameBtn').innerHTML=`🐹 ${p.n}`;
+      document.getElementById('prestigeView').innerHTML=`🌟 ${p.pr}`;
+      document.getElementById('clicksView').innerHTML=`🖱️ ${p.t}`;
+      document.getElementById('comboView').innerHTML=`🔥 ${combo}`;
+      document.getElementById('crystalView').innerHTML=`💎 ${p.cry}`;
+      document.getElementById('scoreView').innerHTML=`💰 ${Math.floor(p.s)}`;
+      document.getElementById('skinBonusView').innerHTML=`✨+${Math.floor(skinBonus)}%`;
+      document.getElementById('powerStat').innerText=up.a+(getSkinBonusType()==='power'?getSkinBonusVal():0);
+      document.getElementById('autoStat').innerText=getAutoVal();
+      document.getElementById('critStat').innerText=up.c+(getSkinBonusType()==='crit'?getSkinBonusVal():0)+'%';
+      document.getElementById('luckStat').innerText=up.e+(getSkinBonusType()==='luck'?getSkinBonusVal():0)+'%';
+      document.getElementById('perClickStat').innerText=Math.floor((up.a+(getSkinBonusType()==='power'?getSkinBonusVal():0))*mult*getComboMult()*getMoneyMult());
+      document.getElementById('perSecStat').innerText=Math.floor(getAutoVal()*mult);
+      document.getElementById('comboMultStat').innerText=getComboMult().toFixed(1);
+      document.getElementById('totalMultStat').innerText=getMoneyMult().toFixed(1);
+      document.getElementById('bobrFace').innerText=p.k;
+      renderSkins();renderUpgrades();renderAch();saveAll();savePlayer();updateFreeTimer();checkQuest();
+    }
+    function renderSkins(){
+      let cont=document.getElementById('skinsList');if(!cont)return;
+      cont.innerHTML='';
+      skins.forEach(s=>{
+        let own=owned.has(s.e);
+        let div=document.createElement('div');
+        div.className=`skin-item ${p.k===s.e?'active-skin':''}`;
+        div.innerHTML=`<div class="skin-emoji">${s.e}</div><div class="skin-info"><div class="skin-name">${s.n}</div><div class="skin-rarity">${s.r}</div><div style="font-size:0.6rem;color:#ffaa66;">🎁 ${s.bonusDesc}</div></div><div class="skin-bonus">${own?'✅':'🔒'}</div>`;
+        if(own)div.onclick=()=>{p.k=s.e;refreshUI();};
+        cont.appendChild(div);
+      });
+      let full=document.getElementById('fullSkinsList');
+      if(full){full.innerHTML='';skins.forEach(s=>{let own=owned.has(s.e);let d=document.createElement('div');d.className=`skin-item ${own?'active-skin':''}`;d.innerHTML=`<div class="skin-emoji">${s.e}</div><div class="skin-info"><div class="skin-name">${s.n}</div><div class="skin-rarity">${s.r}</div><div style="font-size:0.6rem;color:#ffaa66;">🎁 ${s.bonusDesc}</div></div>${own?'✅':'❌'}`;full.appendChild(d);});}
+    }
+    function renderUpgrades(){
+      let items=[
+        {id:'a',name:'💪 Сила',base:50,inc:30,val:up.a,max:100,desc:'+1 к силе'},
+        {id:'b',name:'🤖 Авто',base:100,inc:75,val:up.b,max:100,desc:'+1💰/сек'},
+        {id:'c',name:'⚡ Крит',base:200,inc:100,val:up.c,max:100,desc:'+1% крита'},
+        {id:'e',name:'🍀 Удача',base:150,inc:50,val:up.e,max:100,desc:'+1% удачи'},
+        {id:'f',name:'2️⃣ Двойной',base:1000,inc:500,val:up.f,max:100,desc:'+1% шанс х2'},
+        {id:'g',name:'💀 Мега',base:2500,inc:1000,val:up.g,max:100,desc:'+1% шанс х5'},
+        {id:'h',name:'⛓️ Цепь',base:5000,inc:2000,val:up.h,max:100,desc:'+1% шанс +авто*5'},
+        {id:'i',name:'✨ x10 Буст',base:10000,inc:5000,val:up.i,max:100,desc:'+10% ко всему'},
+        {id:'j',name:'💰 Золотая лихорадка',base:15000,inc:7500,val:up.j,max:100,desc:'+5% к доходу'},
+        {id:'k',name:'⚡ Ускорение',base:20000,inc:10000,val:up.k,max:100,desc:'+5% к авто'},
+        {id:'l',name:'💎 Сокровище',base:25000,inc:12500,val:up.l,max:100,desc:'+5% к кристаллам'},
+        {id:'m',name:'🔥 Мастер комбо',base:30000,inc:15000,val:up.m,max:100,desc:'+5% к комбо'},
+        {id:'n',name:'💀 Гиперкрит',base:50000,inc:25000,val:up.n,max:100,desc:'+0.5% шанс x10'},
+        {id:'o',name:'🧛 Вампиризм',base:75000,inc:37500,val:up.o,max:100,desc:'+0.5% шанс +5%'},
+        {id:'p',name:'👑 Божественный удар',base:100000,inc:50000,val:up.p,max:100,desc:'+0.2% шанс x20'},
+        {id:'q',name:'♾️ Бесконечность',base:200000,inc:100000,val:up.q,max:100,desc:'+0.1% шанс x50'},
+        {id:'r',name:'🌌 Космический буст',base:500000,inc:250000,val:up.r,max:100,desc:'+0.05% шанс x100'},
+        {id:'s',name:'🏆 Легендарный',base:1000000,inc:500000,val:up.s,max:100,desc:'+5% ко всем бонусам'}
+      ];
+      let cont=document.getElementById('upgradesPanel');if(!cont)return;
+      cont.innerHTML='';
+      items.forEach(u=>{
+        let price=Math.floor(u.base+u.val*u.inc);
+        let dis=(p.s<price||u.val>=u.max);
+        let div=document.createElement('div');
+        div.className=`upgrade-block ${dis?'disabled':''}`;
+        div.innerHTML=`<div style="font-weight:bold;color:#ffdd99;">${u.name}</div><div>ур.${u.val}/${u.max}</div><div>${u.desc}</div><div>${price}💰</div>`;
+        if(!dis)div.onclick=()=>{p.s-=price;up[u.id]++;refreshUI();};
+        cont.appendChild(div);
+      });
+    }
+    function renderAch(){
+      let list=[
+        {id:0,name:'10 кликов',icon:'🎯',cond:()=>p.t>=10},{id:1,name:'100 кликов',icon:'🖱️',cond:()=>p.t>=100},
+        {id:2,name:'1000 кликов',icon:'👆',cond:()=>p.t>=1000},{id:3,name:'1000💰',icon:'💰',cond:()=>p.s>=1000},
+        {id:4,name:'10000💰',icon:'💵',cond:()=>p.s>=10000},{id:5,name:'Престиж 1',icon:'🌟',cond:()=>p.pr>=1},
+        {id:6,name:'Престиж 5',icon:'🌟🌟',cond:()=>p.pr>=5},{id:7,name:'10 скинов',icon:'🎨',cond:()=>owned.size>=10},
+        {id:8,name:'50 скинов',icon:'🎨',cond:()=>owned.size>=50},{id:9,name:'100 скинов',icon:'🎨',cond:()=>owned.size>=100},
+        {id:10,name:'Все скины',icon:'👑',cond:()=>owned.size>=skins.length},{id:11,name:'Сила 50',icon:'💪',cond:()=>up.a>=50},
+        {id:12,name:'Авто 50',icon:'🤖',cond:()=>up.b>=50},{id:13,name:'Крит 100%',icon:'⚡',cond:()=>up.c>=100},
+        {id:14,name:'Комбо 99',icon:'🔥',cond:()=>combo>=99},{id:15,name:'1000 кристаллов',icon:'💎',cond:()=>p.cry>=1000},
+        {id:16,name:'50 PvP побед',icon:'⚔️',cond:()=>p.pvpW>=50},{id:17,name:'Все моды 10',icon:'✨',cond:()=>up.i>=10&&up.j>=10&&up.k>=10}
+      ];
+      list.forEach(a=>{if(!ach.includes(a.id)&&a.cond())ach.push(a.id);});
+      let grid=document.getElementById('achievementsGrid');if(!grid)return;
+      grid.innerHTML='';
+      list.forEach(a=>{let unlocked=ach.includes(a.id);let div=document.createElement('div');div.className=`achieve-badge ${unlocked?'unlocked':''}`;div.innerHTML=`<div style="font-size:1.2rem;">${a.icon}</div><div>${a.name}</div>`;grid.appendChild(div);});
+    }
+    function flyMoney(x,y,amt,eff=''){
+      let f=document.createElement('div');f.className='fly-money';f.textContent=`+${Math.floor(amt)}💰 ${eff}`;
+      f.style.position='fixed';f.style.left=x+'px';f.style.top=y+'px';f.style.transform='translate(-50%,-50%)';
+      document.body.appendChild(f);
+      let st=performance.now(),dur=800;
+      function anim(t){let e=t-st,pr=Math.min(e/dur,1),yOff=pr*80,sc=0.7+pr*0.6,op=1-pr;
+        f.style.transform=`translate(-50%, calc(-50% - ${yOff}px)) scale(${sc})`;f.style.opacity=op;
+        if(pr<1)requestAnimationFrame(anim);else if(f&&f.parentNode)f.remove();}
+      requestAnimationFrame(anim);
+    }
+
+    document.getElementById('clickArea').addEventListener('click',(e)=>{
+      let now=Date.now();
+      combo=(now-lastClick<800)?combo+1:1;if(combo>99)combo=99;lastClick=now;
+      if(activeDuel&&now<activeDuel.end){
+        if(activeDuel.p1===p.n)activeDuel.s1++;else if(activeDuel.p2===p.n)activeDuel.s2++;
+        localStorage.setItem('activeDuel',JSON.stringify(activeDuel));updateDuelBanner();
+      }
+      let basePow=up.a+(getSkinBonusType()==='power'?getSkinBonusVal():0);
+      let gain=basePow*(1+p.pr*0.1)*getComboMult()*getMoneyMult();
+      let eff='';
+      if(Math.random()*100<up.c+(getSkinBonusType()==='crit'?getSkinBonusVal():0)){gain*=up.d;eff='💥 КРИТ!';}
+      if(up.g&&Math.random()<up.g/100){gain*=5;eff=eff?eff+' + 💀 МЕГА!':'💀 МЕГА!';}
+      if(Math.random()*100<up.e+(getSkinBonusType()==='luck'?getSkinBonusVal():0)){gain=Math.floor(gain*1.5);eff=eff?eff+' + 🍀 УДАЧА!':'🍀 УДАЧА!';}
+      if(up.h&&Math.random()<up.h/100){gain+=getAutoVal()*5;eff=eff?eff+' + ⛓️ ЦЕПЬ!':'⛓️ ЦЕПЬ!';}
+      if(up.f&&Math.random()<up.f/100){gain*=2;eff=eff?eff+' + 2️⃣ ДВОЙНОЙ!':'2️⃣ ДВОЙНОЙ!';}
+      if(up.n&&Math.random()<up.n/200){gain*=10;eff=eff?eff+' + 💀 ГИПЕРКРИТ!':'💀 ГИПЕРКРИТ!';}
+      if(up.p&&Math.random()<up.p/500){gain*=20;eff=eff?eff+' + 👑 БОЖЕСТВЕННЫЙ!':'👑 БОЖЕСТВЕННЫЙ!';}
+      if(up.q&&Math.random()<up.q/1000){gain*=50;eff=eff?eff+' + ♾️ БЕСКОНЕЧНОСТЬ!':'♾️ БЕСКОНЕЧНОСТЬ!';}
+      if(up.r&&Math.random()<up.r/2000){gain*=100;eff=eff?eff+' + 🌌 КОСМИЧЕСКИЙ!':'🌌 КОСМИЧЕСКИЙ!';}
+      if(up.o&&Math.random()<up.o/200){gain*=1.05;eff=eff?eff+' + 🧛 ВАМПИРИЗМ!':'🧛 ВАМПИРИЗМ!';}
+      p.s+=Math.floor(gain);p.t++;
+      flyMoney(e.clientX,e.clientY,gain,eff);
+      refreshUI();
+    });
+    setInterval(()=>{if(getAutoVal()>0)p.s+=Math.floor(getAutoVal()*(1+p.pr*0.1)*getMoneyMult());refreshUI();},1000);
+    setInterval(()=>{if(combo>0)combo--;refreshUI();},2000);
+
+    function checkQuest(){
+      let now=Date.now();
+      if(now-p.lastQuest>=86400000){p.lastQuest=now;p.questProg=0;}
+      let gainSinceLast=p.s-p.questProg;
+      if(gainSinceLast>=1000&&!ach.includes(18)){
+        p.s+=5000;ach.push(18);alert('📜 ЗАДАНИЕ ВЫПОЛНЕНО! +5000💰');refreshUI();
+      }
+    }
+    function updateFreeTimer(){
+      let now=Date.now(),last=p.lastFreeCase||0,nxt=last+86400000,timer=document.getElementById('freeCaseTimer');
+      if(timer){
+        if(now>=nxt){timer.innerHTML='🎁 ГОТОВ!';timer.style.color='#ffdd88';}
+        else{let h=Math.ceil((nxt-now)/3600000);timer.innerHTML=`⏰ через ${h} ч`;timer.style.color='#aaa';}
+      }
+    }
+    async function freeCase(){
+      let now=Date.now(),last=p.lastFreeCase||0;
+      if(now-last<86400000){let h=Math.ceil((86400000-(now-last))/3600000);alert(`Бесплатный кейс через ${h} часов!`);return;}
+      p.lastFreeCase=now;let pool=skins.filter(s=>s.r==='common'||s.r==='rare');if(!pool.length)pool=skins;
+      let skin=pool[Math.floor(Math.random()*pool.length)];
+      if(!owned.has(skin.e)){owned.add(skin.e);alert(`🎁 БЕСПЛАТНЫЙ КЕЙС! ВЫПАЛ: ${skin.e} ${skin.n} (${skin.r})\n🎁 Бонус: ${skin.bonusDesc}`);}
+      else{let ref=1000;p.s+=ref;alert(`🎁 Повтор! +${ref}💰`);}
+      refreshUI();
+    }
+
+    function openCase(price,rar){
+      if(p.s<price){alert(`Нужно ${price}💰`);return;}
+      p.s-=price;let pool=skins.filter(s=>s.r===rar);if(!pool.length)pool=skins;
+      let skin=pool[Math.floor(Math.random()*pool.length)];
+      if(!owned.has(skin.e)){owned.add(skin.e);alert(`📦 ВЫПАЛ: ${skin.e} ${skin.n} (${skin.r})\n🎁 Бонус: ${skin.bonusDesc}`);}
+      else{let ref=Math.floor(price*0.3);p.s+=ref;alert(`📦 Повтор! +${ref}💰`);}
+      refreshUI();
+    }
+    function openPremium(price){
+      if(p.cry<price){alert(`Нужно ${price}💎`);return;}
+      p.cry-=price;let rar=price===50?'epic':price===200?'legendary':'mythic';
+      let pool=skins.filter(s=>s.r===rar);let skin=pool[Math.floor(Math.random()*pool.length)];
+      if(!owned.has(skin.e)){owned.add(skin.e);alert(`💎 ПРЕМИУМ: ${skin.e} ${skin.n} (${skin.r})\n🎁 Бонус: ${skin.bonusDesc}`);}
+      else{let ref=Math.floor(price*5);p.cry+=ref;alert(`💎 Повтор! +${ref}💎`);}
+      refreshUI();
+    }
+    function renderCases(){
+      let grid=document.getElementById('casesGrid');
+      if(grid){
+        grid.innerHTML='';
+        [{n:'ОБЫЧНЫЙ',p:500,r:'common'},{n:'РЕДКИЙ',p:2000,r:'rare'},{n:'ЭПИЧЕСКИЙ',p:10000,r:'epic'},{n:'ЛЕГЕНДАРНЫЙ',p:50000,r:'legendary'},{n:'МИФИЧЕСКИЙ',p:200000,r:'mythic'}].forEach(c=>{
+          let div=document.createElement('div');div.className='case-card';div.innerHTML=`📦 ${c.n}<br>${c.p}💰`;div.onclick=()=>openCase(c.p,c.r);grid.appendChild(div);
+        });
+      }
+      let pGrid=document.getElementById('premiumCaseGrid');
+      if(pGrid){
+        pGrid.innerHTML='';
+        [{n:'АЛМАЗНЫЙ',p:50},{n:'ЛЕГЕНДАРНЫЙ',p:200},{n:'МИФИЧЕСКИЙ',p:500}].forEach(c=>{
+          let div=document.createElement('div');div.className='case-card';div.innerHTML=`💎 ${c.n}<br>${c.p}💎`;div.onclick=()=>openPremium(c.p);pGrid.appendChild(div);
+        });
+      }
+    }
+
+    async function loadLeaderboard(){
+      try{let{data,error}=await sb.from('leaderboard').select('*').order('score',{ascending:false}).limit(100);if(error)throw error;renderLB(data||[]);return data||[];}catch(e){return[];}
+    }
+    async function savePlayer(){
+      try{await sb.from('leaderboard').upsert({name:p.n,score:Math.floor(p.s),prestige:p.pr,crystals:p.cry,skin:p.k,pvp_wins:p.pvpW,updated_at:new Date()},{onConflict:'name'});}catch(e){}
+    }
+    function renderLB(data){
+      let tb=document.getElementById('leaderboardBody');if(!tb)return;
+      tb.innerHTML='';
+      data.slice(0,15).forEach((pl,i)=>{let cls=i===0?'fp':i===1?'sp':i===2?'tp':'';tb.innerHTML+=`<td class="${cls}">${i+1}  <td>${pl.name}${pl.name===p.n?'⭐':''}<td>${pl.score}<td>${pl.prestige}<td>${pl.crystals||0}<td>${pl.skin}<td>🏆${pl.pvp_wins||0}`;});
+    }
+    async function loadChat(){
+      try{let{data,error}=await sb.from('chat_messages').select('*').order('created_at',{ascending:false}).limit(100);if(error)throw error;renderChat((data||[]).reverse());}catch(e){}
+    }
+    async function sendMsg(msg){if(!msg.trim())return;try{await sb.from('chat_messages').insert({sender:p.n,message:msg.trim()});}catch(e){}}
+    function renderChat(msgs){
+      let box=document.getElementById('globalChatMsgs');if(!box)return;
+      box.innerHTML='';
+      msgs.slice(-50).forEach(m=>{let d=new Date(m.created_at);box.innerHTML+=`<div><b>${escapeHtml(m.sender)}</b> [${d.getHours()}:${d.getMinutes()}]: ${escapeHtml(m.message)}</div>`;});
+      box.scrollTop=box.scrollHeight;
+    }
+    function subChat(){
+      sb.channel('chat').on('postgres_changes',{event:'INSERT',schema:'public',table:'chat_messages'},payload=>{
+        let m=payload.new,d=new Date(m.created_at),box=document.getElementById('globalChatMsgs');
+        if(box){box.innerHTML+=`<div><b>${escapeHtml(m.sender)}</b> [${d.getHours()}:${d.getMinutes()}]: ${escapeHtml(m.message)}</div>`;box.scrollTop=box.scrollHeight;if(box.children.length>100)box.removeChild(box.firstChild);}
+      }).subscribe();
+    }
+    function escapeHtml(str){return str.replace(/[&<>]/g,m=>m==='&'?'&amp;':m==='<'?'&lt;':'&gt;');}
+
+    async function sendDuel(to){
+      try{await sb.from('duel_requests').insert({from_player:p.n,to_player:to});alert(`⚔️ Запрос отправлен ${to}!`);loadDuelReqs();}catch(e){}
+    }
+    async function loadDuelReqs(){
+      try{let{data,error}=await sb.from('duel_requests').select('*').eq('to_player',p.n).order('created_at',{ascending:false});if(error)throw error;renderDuelReqs(data||[]);}catch(e){}
+    }
+    async function acceptDuel(from,id){
+      try{await sb.from('duel_requests').delete().eq('id',id);showCountdown3();}catch(e){}
+    }
+    async function delDuelReq(id){
+      try{await sb.from('duel_requests').delete().eq('id',id);loadDuelReqs();}catch(e){}
+    }
+    function renderDuelReqs(reqs){
+      let div=document.getElementById('duelRequestsBlock');if(!div)return;
+      if(reqs.length===0){div.innerHTML='<div class="section-header">📨 НЕТ ЗАПРОСОВ</div>';return;}
+      div.innerHTML='<div class="section-header">📨 ЗАПРОСЫ</div>';
+      reqs.forEach(r=>{let block=document.createElement('div');block.className='skin-item';block.innerHTML=`<div class="skin-emoji">⚔️</div><div class="skin-info"><div class="skin-name">${r.from_player}</div></div><button class="foot-btn" data-accept="${r.id}" data-from="${r.from_player}" style="margin-left:auto;">✅ ПРИНЯТЬ</button><button class="foot-btn" data-decline="${r.id}" style="margin-left:5px;">❌ ОТКЛОНИТЬ</button>`;div.appendChild(block);});
+      document.querySelectorAll('[data-accept]').forEach(btn=>{btn.onclick=()=>acceptDuel(btn.dataset.from,parseInt(btn.dataset.accept));});
+      document.querySelectorAll('[data-decline]').forEach(btn=>{btn.onclick=()=>delDuelReq(parseInt(btn.dataset.decline));});
+    }
+    function showCountdown3(){
+      let cnt=document.getElementById('duelCountdown'),bnr=document.getElementById('duelNotification');
+      if(!cnt)return;
+      cnt.style.display='block';let c=3;
+      if(duelInt)clearInterval(duelInt);
+      duelInt=setInterval(()=>{
+        c--;
+        if(c>0)cnt.innerHTML=`<h3>⚔️ ДУЭЛЬ ЧЕРЕЗ ${c}... ⚔️</h3>`;
+        else{
+          clearInterval(duelInt);
+          cnt.style.display='none';
+          activeDuel={p1:p.n,p2:'соперник',s1:0,s2:0,end:Date.now()+10000};
+          localStorage.setItem('activeDuel',JSON.stringify(activeDuel));
+          bnr.style.display='block';
+          alert('⚔️ ДУЭЛЬ НАЧАЛАСЬ! 10 СЕКУНД!');
+          startDuelTimer();
+        }
+      },1000);
+    }
+    function startDuelTimer(){
+      if(duelInt)clearInterval(duelInt);
+      duelInt=setInterval(()=>{if(activeDuel&&Date.now()<activeDuel.end)updateDuelBanner();else if(activeDuel&&Date.now()>=activeDuel.end){endDuel();clearInterval(duelInt);duelInt=null;}},200);
+    }
+    function updateDuelBanner(){
+      let bnr=document.getElementById('duelNotification');if(!bnr)return;
+      if(activeDuel&&Date.now()<activeDuel.end){
+        let mySc=activeDuel.p1===p.n?activeDuel.s1:activeDuel.s2,oppSc=activeDuel.p1===p.n?activeDuel.s2:activeDuel.s1,tl=Math.ceil((activeDuel.end-Date.now())/1000);
+        bnr.innerHTML=`<h3>⚔️ ДУЭЛЬ!</h3><p>🔥 ВАШ СЧЕТ: ${mySc} | СОПЕРНИК: ${oppSc} 🔥</p><p>⏱️ ОСТАЛОСЬ: ${tl} СЕК ⏱️</p>`;
+      }else if(activeDuel&&Date.now()>=activeDuel.end)endDuel();
+      else bnr.style.display='none';
+    }
+    function endDuel(){
+      if(!activeDuel)return;
+      let win=activeDuel.s1>activeDuel.s2?activeDuel.p1:activeDuel.p2;
+      if(win===p.n){p.s+=5000;p.pvpW++;refreshUI();alert(`🏆 ПОБЕДА! +5000💰 +1 PvP!`);savePlayer();}
+      else alert(`💔 Поражение. Победил ${win}`);
+      localStorage.removeItem('activeDuel');activeDuel=null;
+      let bnr=document.getElementById('duelNotification');if(bnr)bnr.style.display='none';
+      if(duelInt)clearInterval(duelInt);duelInt=null;
+    }
+    async function renderPlayers(){
+      let data=await loadLeaderboard();
+      let div=document.getElementById('playersListDuel');if(!div)return;
+      div.innerHTML='<div class="section-header">👥 ДОСТУПНЫЕ</div>';
+      data.filter(pl=>pl.name!==p.n).forEach(pl=>{let btn=document.createElement('div');btn.className='skin-item';btn.style.justifyContent='center';btn.innerHTML=`<div class="skin-emoji">⚔️</div><div class="skin-info"><div class="skin-name">${pl.name}</div><div class="skin-rarity">💰${pl.score}</div></div>`;btn.onclick=()=>sendDuel(pl.name);div.appendChild(btn);});
+    }
+
+    function renderPrivateChat(){
+      let to=document.getElementById('privateSelect')?.value,box=document.getElementById('privateChatArea');if(!box)return;
+      box.innerHTML='';
+      privMsg.filter(m=>(m.f===p.n&&m.to===to)||(m.f===to&&m.to===p.n)).slice(-30).forEach(m=>{let d=new Date(m.t);box.innerHTML+=`<div><b>${m.f}</b> [${d.getHours()}:${d.getMinutes()}]: ${m.msg}</div>`;});
+      box.scrollTop=box.scrollHeight;
+    }
+    async function updatePrivateSel(){
+      let data=await loadLeaderboard();let sel=document.getElementById('privateSelect');
+      if(sel){sel.innerHTML='<option value="">-- игрок --</option>';data.filter(pl=>pl.name!==p.n).forEach(pl=>{sel.innerHTML+=`<option value="${pl.name}">${pl.name}</option>`;});}
+    }
+
+    document.getElementById('sendGlobalBtn').onclick=async()=>{let msg=document.getElementById('chatInput')?.value;if(msg&&msg.trim()){await sendMsg(msg);document.getElementById('chatInput').value='';}};
+    document.getElementById('sendPrivateBtn').onclick=()=>{let to=document.getElementById('privateSelect')?.value,msg=document.getElementById('privateInput')?.value;if(msg&&msg.trim()&&to){privMsg.push({f:p.n,to:to,msg:msg.trim(),t:Date.now()});if(privMsg.length>200)privMsg=privMsg.slice(-200);saveAll();renderPrivateChat();document.getElementById('privateInput').value='';}else if(!to)alert('Выберите получателя');};
+    document.getElementById('chatInput')?.addEventListener('keypress',e=>{if(e.key==='Enter')document.getElementById('sendGlobalBtn').click();});
+    document.getElementById('privateInput')?.addEventListener('keypress',e=>{if(e.key==='Enter')document.getElementById('sendPrivateBtn').click();});
+
+    document.querySelectorAll('[data-gems]').forEach(btn=>{btn.onclick=()=>{let gems=parseInt(btn.dataset.gems),price=parseInt(btn.dataset.price);if(p.s>=price){p.s-=price;p.cry+=gems;refreshUI();alert(`+${gems}💎`);}else alert(`Нужно ${price}💰`);};});
+    document.getElementById('critBoostBtn').onclick=()=>{if(p.cry>=500){p.cry-=500;up.c=Math.min(100,up.c+20);refreshUI();alert('+20% крита');}else alert('500💎');};
+    document.getElementById('luckBoostBtn').onclick=()=>{if(p.cry>=500){p.cry-=500;up.e=Math.min(100,up.e+20);refreshUI();alert('+20% удачи');}else alert('500💎');};
+    document.getElementById('autoBoostBtn').onclick=()=>{if(p.cry>=1000){p.cry-=1000;up.b+=5;refreshUI();alert('+5 авто');}else alert('1000💎');};
+    document.getElementById('megaBoostBtn').onclick=()=>{if(p.cry>=2000){p.cry-=2000;p.megaUntil=Date.now()+600000;refreshUI();alert('💥 МЕГА БУСТ! +50% на 10 мин');}else alert('2000💎');};
+    document.getElementById('goldenBoostBtn').onclick=()=>{if(p.cry>=5000){p.cry-=5000;p.goldenUntil=Date.now()+3600000;refreshUI();alert('👑 ЗОЛОТОЙ БУСТ! x2 на 1 час');}else alert('5000💎');};
+    document.getElementById('timeWarpBtn').onclick=()=>{if(p.cry>=1000){p.cry-=1000;p.timeWarpUntil=Date.now()+300000;refreshUI();alert('⏰ ВРЕМЕННОЙ СДВИГ! +100% на 5 мин');}else alert('1000💎');};
+    document.getElementById('bonusHourBtn').onclick=()=>{if(p.cry>=500){p.cry-=500;p.bonusHourUntil=Date.now()+3600000;refreshUI();alert('⭐ СЧАСТЛИВЫЙ ЧАС! x3 на 1 час');}else alert('500💎');};
+    document.getElementById('doubleEventBtn').onclick=()=>{if(p.cry>=200){p.cry-=200;p.doubleUntil=Date.now()+3600000;refreshUI();alert('✨ x2 деньги на 1 час');}else alert('200💎');};
+    document.getElementById('freeCaseEventBtn').onclick=()=>{let now=Date.now();if(now-p.lastFree>=600000){p.lastFree=now;let skin=skins[Math.floor(Math.random()*skins.length)];if(!owned.has(skin.e)){owned.add(skin.e);alert(`🎁 БЕСПЛАТНЫЙ СКИН: ${skin.e} ${skin.n}\n🎁 Бонус: ${skin.bonusDesc}`);}else{p.s+=500;alert('🎁 +500💰');}refreshUI();}else alert(`Через ${Math.ceil((600000-(now-p.lastFree))/60000)} мин`);};
+    document.getElementById('tournamentBtn').onclick=async()=>{let data=await loadLeaderboard();let top3=data.slice(0,3);if(top3.some(pl=>pl.name===p.n)){p.s+=5000;refreshUI();alert('🏆 ВЫ В ТОП-3! +5000💰');}else alert('Вы не в топ-3');};
+    document.getElementById('superJackpotBtn').onclick=()=>{if(p.cry>=1000){p.cry-=1000;if(Math.random()<0.01){let win=1000000;p.s+=win;alert(`💎 СУПЕР ДЖЕКПОТ! +${win}💰!!!`);}else alert('😢 Не повезло...');refreshUI();}else alert('1000💎');};
+    document.getElementById('dailyBtn').onclick=()=>{let now=Date.now();if(now-p.lastDaily>=86400000){p.s+=1000;p.lastDaily=now;refreshUI();alert('+1000💰');}else alert(`Через ${Math.ceil((86400000-(now-p.lastDaily))/3600000)}ч`);};
+    document.getElementById('dailyQuestBtn').onclick=()=>{alert(`📜 ЗАДАНИЕ: накликать 1000💰\nПрогресс: ${Math.min(1000,p.s-p.questProg)}/1000\nНаграда: +5000💰`);};
+    document.getElementById('luckDayBtn').onclick=()=>{if(p.cry>=50){p.cry-=50;p.luckDayUntil=Date.now()+1800000;refreshUI();alert('🍀 УДАЧА ДНЯ! +50% на 30 мин');}else alert('50💎');};
+    document.getElementById('lotteryBtn').onclick=()=>{
+      if(p.s<500){alert('500💰');return;}
+      p.s-=500;let r=Math.random();
+      if(r<0.01){p.s+=100000;alert('🎉🎉🎉 МЕГА ДЖЕКПОТ! +100000💰');}
+      else if(r<0.03){p.s+=25000;alert('🏆 СУПЕР ДЖЕКПОТ! +25000💰');}
+      else if(r<0.08){p.s+=5000;alert('🌟 КРУПНЫЙ ВЫИГРЫШ! +5000💰');}
+      else if(r<0.2){p.s+=1500;alert('✨ ХОРОШИЙ ВЫИГРЫШ! +1500💰');}
+      else{p.s+=600;alert('🍀 МАЛЕНЬКИЙ ВЫИГРЫШ! +600💰');}
+      refreshUI();
+    };
+    document.getElementById('prestigeAction').onclick=()=>{if(p.s>=10000&&confirm('Престиж? +1 уровень, сброс денег')){p.pr++;p.s=0;up={a:1+p.pr,b:0+p.pr,c:0+p.pr*2,d:2,e:0+p.pr,f:0,g:0,h:0,i:0,j:0,k:0,l:0,m:0,n:0,o:0,p:0,q:0,r:0,s:0};refreshUI();}};
+    document.getElementById('refreshLeaderboardBtn').onclick=async()=>{await loadLeaderboard();};
+    document.getElementById('resetMySelfBtn').onclick=async()=>{if(confirm('Сбросить ВЕСЬ свой прогресс?')){p.s=0;p.pr=0;p.t=0;p.cry=0;p.pvpW=0;up={a:1,b:0,c:0,d:2,e:0,f:0,g:0,h:0,i:0,j:0,k:0,l:0,m:0,n:0,o:0,p:0,q:0,r:0,s:0};owned=new Set(['🦫']);p.k='🦫';ach=[];combo=0;refreshUI();await savePlayer();await loadLeaderboard();alert('✅ Прогресс сброшен!');}};
+    document.getElementById('freeCaseBtn').onclick=freeCase;
+
+    async function showAdmin(){
+      let pwd=prompt('🔐 Пароль:');
+      if(pwd!=='47lysejes1'){alert('Неверно');return;}
+      let panel=document.getElementById('adminPanel');if(!panel)return;
+      panel.innerHTML=`
+      <div class="admin-section"><div class="admin-section-title">💎 ДЛЯ СЕБЯ</div><div class="admin-panel-grid">
+        <div class="admin-card" id="admMoneySelf">💰 +100000💰</div><div class="admin-card" id="admCrystalSelf">💎 +100💎</div>
+        <div class="admin-card" id="admAllSkinsSelf">🎨 ВСЕ СКИНЫ</div><div class="admin-card" id="admDoubleSelf">✨ x2 СОБЫТИЕ</div>
+        <div class="admin-card" id="admBonusSelf">⭐ СЧАСТЛИВЫЙ ЧАС</div><div class="admin-card" id="admComboSelf">🔥 +50 КОМБО</div>
+        <div class="admin-card" id="admPvpSelf">⚔️ +10 PvP</div><div class="admin-card" id="admMaxUp">⭐ ВСЕ МОДЫ 100</div>
+      </div></div>
+      <div class="admin-section"><div class="admin-section-title">👥 УПРАВЛЕНИЕ</div><div class="admin-panel-grid">
+        <div class="admin-card" id="admResetPlayer">🎯 СБРОСИТЬ ИГРОКА</div><div class="admin-card" id="admDeletePlayer">🗑️ УДАЛИТЬ</div>
+        <div class="admin-card" id="admAddMoneyTo">💰 НАЧИСЛИТЬ ДЕНЬГИ</div><div class="admin-card" id="admAddCrystalsTo">💎 НАЧИСЛИТЬ КРИСТАЛЛЫ</div>
+        <div class="admin-card" id="admGiveSkinTo">🎨 ВЫДАТЬ СКИН</div><div class="admin-card" id="admResetAllTable">🔄 ОЧИСТИТЬ ТАБЛИЦУ</div>
+      </div></div>
+      <div class="admin-section"><div class="admin-section-title">📊 СТАТИСТИКА</div><div class="admin-panel-grid">
+        <div class="admin-card" id="admStats">📊 ПОКАЗАТЬ</div><div class="admin-card" id="admList">📋 СПИСОК ИГРОКОВ</div>
+        <div class="admin-card" id="admExit">❌ ВЫХОД</div>
+      </div></div>
+    `;
+      document.getElementById('admMoneySelf').onclick=()=>{p.s+=100000;refreshUI();alert('+100000💰');};
+      document.getElementById('admCrystalSelf').onclick=()=>{p.cry+=100;refreshUI();alert('+100💎');};
+      document.getElementById('admAllSkinsSelf').onclick=()=>{skins.forEach(s=>owned.add(s.e));refreshUI();alert('Все скины');};
+      document.getElementById('admDoubleSelf').onclick=()=>{p.doubleUntil=Date.now()+3600000;refreshUI();alert('✨ x2 событие');};
+      document.getElementById('admBonusSelf').onclick=()=>{p.bonusHourUntil=Date.now()+3600000;refreshUI();alert('⭐ Счастливый час');};
+      document.getElementById('admComboSelf').onclick=()=>{combo=Math.min(99,combo+50);refreshUI();alert('+50 комбо');};
+      document.getElementById('admPvpSelf').onclick=()=>{p.pvpW+=10;refreshUI();alert('+10 PvP');};
+      document.getElementById('admMaxUp').onclick=()=>{for(let k in up)up[k]=100;refreshUI();alert('Все моды 100');};
+
+      document.getElementById('admResetPlayer').onclick=async()=>{
+        await loadLeaderboard();
+        let list=leaderboardData.map((pl,i)=>`${i+1}. ${pl.name} (💰${pl.score})`).join('\n');
+        let num=prompt(`Введите номер для СБРОСА:\n${list}\n0 - ОТМЕНА`);
+        if(num&&num!=='0'){let idx=parseInt(num)-1;if(idx>=0&&idx<leaderboardData.length){
+          let t=leaderboardData[idx];if(confirm(`СБРОСИТЬ ${t.name}?`)){
+            t.score=0;t.prestige=0;t.crystals=0;t.pvp_wins=0;t.skin='🦫';
+            await sb.from('leaderboard').upsert(t,{onConflict:'name'});
+            alert(`✅ ${t.name} сброшен!`);await loadLeaderboard();
+            if(t.name===p.n){p.s=0;p.pr=0;p.cry=0;p.pvpW=0;owned=new Set(['🦫']);p.k='🦫';up={a:1,b:0,c:0,d:2,e:0,f:0,g:0,h:0,i:0,j:0,k:0,l:0,m:0,n:0,o:0,p:0,q:0,r:0,s:0};ach=[];combo=0;refreshUI();}
+          }
+        }else alert('Неверно');}
+      };
+      document.getElementById('admDeletePlayer').onclick=async()=>{
+        await loadLeaderboard();
+        let list=leaderboardData.map((pl,i)=>`${i+1}. ${pl.name}`).join('\n');
+        let num=prompt(`Введите номер для УДАЛЕНИЯ:\n${list}\n0 - ОТМЕНА`);
+        if(num&&num!=='0'){let idx=parseInt(num)-1;if(idx>=0&&idx<leaderboardData.length){
+          let t=leaderboardData[idx];if(confirm(`УДАЛИТЬ ${t.name}?`)){
+            await sb.from('leaderboard').delete().eq('name',t.name);
+            alert(`✅ ${t.name} удалён!`);await loadLeaderboard();
+          }
+        }else alert('Неверно');}
+      };
+      document.getElementById('admAddMoneyTo').onclick=async()=>{
+        await loadLeaderboard();
+        let list=leaderboardData.map((pl,i)=>`${i+1}. ${pl.name} (💰${pl.score})`).join('\n');
+        let num=prompt(`Введите номер:\n${list}\n0 - ОТМЕНА`);
+        if(num&&num!=='0'){let idx=parseInt(num)-1;if(idx>=0&&idx<leaderboardData.length){
+          let amt=prompt(`Сумма для ${leaderboardData[idx].name}:`,'10000');
+          if(amt&&parseInt(amt)>0){leaderboardData[idx].score+=parseInt(amt);
+            await sb.from('leaderboard').upsert(leaderboardData[idx],{onConflict:'name'});
+            alert(`✅ +${amt}💰`);await loadLeaderboard();
+            if(leaderboardData[idx].name===p.n){p.s+=parseInt(amt);refreshUI();}
+          }
+        }else alert('Неверно');}
+      };
+      document.getElementById('admAddCrystalsTo').onclick=async()=>{
+        await loadLeaderboard();
+        let list=leaderboardData.map((pl,i)=>`${i+1}. ${pl.name} (💎${pl.crystals||0})`).join('\n');
+        let num=prompt(`Введите номер:\n${list}\n0 - ОТМЕНА`);
+        if(num&&num!=='0'){let idx=parseInt(num)-1;if(idx>=0&&idx<leaderboardData.length){
+          let amt=prompt(`Кристаллов для ${leaderboardData[idx].name}:`,'100');
+          if(amt&&parseInt(amt)>0){leaderboardData[idx].crystals=(leaderboardData[idx].crystals||0)+parseInt(amt);
+            await sb.from('leaderboard').upsert(leaderboardData[idx],{onConflict:'name'});
+            alert(`✅ +${amt}💎`);await loadLeaderboard();
+            if(leaderboardData[idx].name===p.n){p.cry+=parseInt(amt);refreshUI();}
+          }
+        }else alert('Неверно');}
+      };
+      document.getElementById('admGiveSkinTo').onclick=async()=>{
+        await loadLeaderboard();
+        let list=leaderboardData.map((pl,i)=>`${i+1}. ${pl.name}`).join('\n');
+        let num=prompt(`Введите номер:\n${list}\n0 - ОТМЕНА`);
+        if(num&&num!=='0'){let idx=parseInt(num)-1;if(idx>=0&&idx<leaderboardData.length){
+          let skinList=skins.map((s,i)=>`${i+1}. ${s.e} ${s.n}`).join('\n');
+          let skinNum=prompt(`Выберите скин:\n${skinList}\n0 - ОТМЕНА`);
+          let skinIdx=parseInt(skinNum)-1;
+          if(skinIdx>=0&&skinIdx<skins.length){
+            let skin=skins[skinIdx];
+            if(leaderboardData[idx].name===p.n){owned.add(skin.e);refreshUI();}
+            alert(`✅ Скин ${skin.e} выдан`);
+          }
+        }else alert('Неверно');}
+      };
+      document.getElementById('admResetAllTable').onclick=async()=>{if(confirm('Очистить таблицу?')){await sb.from('leaderboard').delete().neq('id',0);alert('Очищено');await loadLeaderboard();}};
+      document.getElementById('admStats').onclick=()=>{alert(`💰 ${Math.floor(p.s)}\n💎 ${p.cry}\n🎨 ${owned.size}/${skins.length}\n⚔️ ${p.pvpW}\n🌟 ${p.pr}\n🖱️ ${p.t}\n🔥 ${combo}`);};
+      document.getElementById('admList').onclick=async()=>{await loadLeaderboard();let list=leaderboardData.map((pl,i)=>`${i+1}. ${pl.name} | 💰${pl.score} | 💎${pl.crystals||0}`).join('\n');alert(`📋 ИГРОКИ (${leaderboardData.length}):\n\n${list}`);};
+      document.getElementById('admExit').onclick=()=>{panel.innerHTML='';document.querySelector('.tab-btn[data-tab="main"]').click();};
+    }
+
+    document.querySelectorAll('.tab-btn').forEach(btn=>{
+      btn.onclick=async()=>{
+        document.querySelectorAll('.tab-btn').forEach(t=>t.classList.remove('active'));
+        document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+        btn.classList.add('active');
+        let id=btn.dataset.tab;
+        document.getElementById(`tab-${id}`).classList.add('active');
+        if(id==='cases')renderCases();
+        if(id==='pvp'){await loadLeaderboard();await renderPlayers();await loadDuelReqs();}
+        if(id==='chat'){await loadChat();renderPrivateChat();await updatePrivateSel();}
+        if(id==='admin')showAdmin();
+      };
+    });
+
+    document.getElementById('changeNameFoot').onclick=()=>{let nn=prompt('Новое имя:',p.n);if(nn){p.n=nn.slice(0,15);refreshUI();}};
+    document.getElementById('shareLinkFoot').onclick=()=>{navigator.clipboard?.writeText(location.href).then(()=>alert('Ссылка скопирована!'));};
+    document.getElementById('exportBackupBtn').onclick=()=>{let bak={n:p.n,s:p.s,pr:p.pr,k:p.k,e:[...owned],u:up,a:ach,cr:p.cry,pvp:p.pvpW};localStorage.setItem('fullBackup',JSON.stringify(bak));alert('Сохранено');};
+    document.getElementById('importBackupBtn').onclick=()=>{let b=localStorage.getItem('fullBackup');if(b){try{let d=JSON.parse(b);p.n=d.n;p.s=d.s;p.pr=d.pr;p.k=d.k;owned=new Set(d.e);up=d.u;ach=d.a||[];p.cry=d.cr||0;p.pvpW=d.pvp||0;refreshUI();alert('Загружено');}catch(e){alert('Ошибка');}}else alert('Нет сохранения');};
+
+    let saved=localStorage.getItem('activeDuel');
+    if(saved){activeDuel=JSON.parse(saved);if(activeDuel&&Date.now()<activeDuel.end){document.getElementById('duelNotification').style.display='block';startDuelTimer();}else{localStorage.removeItem('activeDuel');activeDuel=null;}}
+
+    await loadLeaderboard();
+    await loadChat();
+    await loadDuelReqs();
+    subChat();
+    renderCases();
+    refreshUI();
+    setInterval(()=>{savePlayer();},30000);
+    setInterval(()=>{loadDuelReqs();updateFreeTimer();checkQuest();},5000);
+  })();
+</script>
+</body>
+</html>
